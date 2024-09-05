@@ -13,12 +13,15 @@ public abstract class AggregationClient {
     public HttpClient httpClient;
     public LamportClock lamportClock;
 
-    public final void startClient()  {
+    private static final int MAX_RETRIES = 5; // Maximum number of retry attempts
+    private static final long RETRY_DELAY_MS = 2000; // Delay between retries in milliseconds
+
+    public final void startClient() {
         // Send request every 2 seconds
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Sending request to " + this.serverURI + "...");
-            sendRequest();
+            sendRequestWithRetry();
         }, 0, 2, TimeUnit.SECONDS);
 
         // Keep application alive
@@ -30,20 +33,21 @@ public abstract class AggregationClient {
         }
     }
 
-    public final void sendRequest() {
-        HttpRequest request = this.createRequest(this.serverURI);
-        HttpResponse<String> response = this.sendRequest(request);
-        processResponse(response);
+    public final void sendRequestWithRetry() {
+        try {
+            HttpRequest request = this.createRequest(this.serverURI);
+            HttpResponse<String> response = this.sendRequest(request);
+            processResponse(response);
+            return; // Exit if request is successful
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Request failed. Retrying...");
+        }
     }
 
     public abstract HttpRequest createRequest(URI uri);
 
-    public final HttpResponse<String> sendRequest(HttpRequest request) {
-        try {
-            return this.httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public final HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
+        return this.httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public abstract void processResponse(HttpResponse<String> response);

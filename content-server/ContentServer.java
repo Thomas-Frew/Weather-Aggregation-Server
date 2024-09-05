@@ -44,7 +44,7 @@ public class ContentServer extends AggregationClient {
         int otherTime = Integer.parseInt(response.headers().firstValue("LamportTime").orElse("0"));
         this.lamportClock.processEvent(otherTime);
 
-        System.out.println("Response received.");
+        System.out.println("Received response with status code: " + response.statusCode());
     }
 
     public static void main(String[] args) {

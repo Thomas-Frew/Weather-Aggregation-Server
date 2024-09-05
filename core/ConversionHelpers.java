@@ -5,6 +5,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class ConversionHelpers {
     public static JSONParser jsonParser = new JSONParser();
 
     public static String readContentFile(String filePath) throws IOException {
-        Map<String, String> jsonMap = new HashMap<>();
+        LinkedHashMap<String, String> jsonMap = new LinkedHashMap<>(); // Preserve order
         String line;
 
         // Read file into map
@@ -32,6 +33,11 @@ public class ConversionHelpers {
         FileReader reader = new FileReader(filePath);
         JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
         return jsonObject.toJSONString();
+    }
+
+    public static JSONObject stringToJSON(String jsonString) throws ParseException {
+        JSONParser parser = new JSONParser();
+        return (JSONObject) parser.parse(jsonString);
     }
 
     public static Map<String, String> requestHeadersToMap(Headers headers) {   // Extract headers
