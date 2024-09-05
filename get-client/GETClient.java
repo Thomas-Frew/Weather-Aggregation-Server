@@ -1,7 +1,6 @@
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.net.*;
 import java.io.*;
 import java.net.http.HttpClient;
@@ -46,17 +45,16 @@ public class GETClient implements AggregationClient {
         // Create a ScheduledExecutorService
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-        // Schedule the task to run every 30 seconds
+        // Schedule the task to run every 2 seconds
         scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Sending GET to " + this.serverURI + "...");
             HttpRequest request = this.createRequest(this.serverURI);
             HttpResponse<String> response = this.sendRequest(request);
             processResponse(response);
-        }, 0, 3, TimeUnit.SECONDS);
+        }, 0, 2, TimeUnit.SECONDS);
 
         while (true) {}
     }
-
 
     @Override
     public void processCommand() {
@@ -92,7 +90,6 @@ public class GETClient implements AggregationClient {
                 Object value = jsonObject.get(key);
                 System.out.println(key + ": " + value);
             });
-
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

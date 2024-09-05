@@ -3,7 +3,6 @@ import com.sun.net.httpserver.HttpServer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -74,8 +73,7 @@ public class AggregationServer {
         int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
         this.lamportClock.processEvent(otherTime);
 
-        try {
-            FileReader reader = new FileReader("aggregation-server/weather_data.txt");
+        try (FileReader reader = new FileReader("aggregation-server/weather_data.txt")) {
             JSONObject jsonObject = (JSONObject) this.jsonParser.parse(reader);
             String jsonString = jsonObject.toJSONString();
 
@@ -89,7 +87,39 @@ public class AggregationServer {
         }
     }
 
+    private String readRequestBody(InputStream inputStream) throws IOException {
+        // Convert InputStream to String
+        StringBuilder stringBuilder = new StringBuilder();
+        int i;
+        while ((i = inputStream.read()) != -1) {
+            stringBuilder.append((char) i);
+        }
+        return stringBuilder.toString();
+    }
+
     private void handlePUT(HttpExchange exchange) {
+        // Extract headers
+        Map<String, String> headers = new HashMap<>();
+        for (Map.Entry<String, List<String>> header : exchange.getRequestHeaders().entrySet()) {
+            String value = String.join(", ", header.getValue());
+            headers.put(header.getKey(), value);
+        }
+
+        // Process event with the lamport clock
+        int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
+        this.lamportClock.processEvent(otherTime);
+
+        try {
+
+            String requestBody = readRequestBody(exchange.getRequestBody());
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("aggregation-server/weather_data.txt"))) {
+                writer.write(requestBody);
+            }
+            exchange.sendResponseHeaders(200, 0);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {
