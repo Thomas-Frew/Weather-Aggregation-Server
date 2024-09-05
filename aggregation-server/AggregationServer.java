@@ -1,13 +1,9 @@
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AggregationServer {
@@ -17,8 +13,6 @@ public class AggregationServer {
     private final LamportClock lamportClock;
     private final int serverPort;
 
-    private final JSONParser jsonParser;
-
     public AggregationServer() {
         this(DEFAULT_PORT);
     }
@@ -26,7 +20,6 @@ public class AggregationServer {
     public AggregationServer(int serverPort) {
         this.lamportClock = new LamportClockImpl();
         this.serverPort = serverPort;
-        this.jsonParser = new JSONParser();
     }
 
     void startServer() {
@@ -39,7 +32,6 @@ public class AggregationServer {
             HttpServer server = HttpServer.create(socketAddress, 0);
             server.createContext("/", this::handleRequest);
 
-            // Start the server
             server.setExecutor(null);
             server.start();
 
@@ -51,82 +43,94 @@ public class AggregationServer {
     }
 
     // Method to handle HTTP requests
-    private void handleRequest(HttpExchange exchange) throws IOException {
-        // Get the request method
+    private void handleRequest(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
 
+        boolean result;
         switch (method) {
-            case "GET" -> this.handleGET(exchange);
-            case "PUT" -> this.handlePUT(exchange);
+            case "GET" -> result = this.handleGET(exchange);
+            case "PUT" -> result = this.handlePUT(exchange);
+            default -> result = false;
         }
+
+        if (!result) System.out.println("Request handler for " + method + " failed");
     }
 
-    private void handleGET(HttpExchange exchange) throws IOException {
-        // Extract headers
-        Map<String, String> headers = new HashMap<>();
-        for (Map.Entry<String, List<String>> header : exchange.getRequestHeaders().entrySet()) {
-            String value = String.join(", ", header.getValue());
-            headers.put(header.getKey(), value);
-        }
+    private boolean handleGET(HttpExchange exchange) {
+        System.out.println("Handling GET...");
 
-        // Process event with the lamport clock
-        int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
-        this.lamportClock.processEvent(otherTime);
+        Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
 
-        try (FileReader reader = new FileReader("aggregation-server/weather_data.txt")) {
-            JSONObject jsonObject = (JSONObject) this.jsonParser.parse(reader);
-            String jsonString = jsonObject.toJSONString();
-
-            exchange.sendResponseHeaders(200, jsonString.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(jsonString.getBytes());
-            os.close();
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String readRequestBody(InputStream inputStream) throws IOException {
-        // Convert InputStream to String
-        StringBuilder stringBuilder = new StringBuilder();
-        int i;
-        while ((i = inputStream.read()) != -1) {
-            stringBuilder.append((char) i);
-        }
-        return stringBuilder.toString();
-    }
-
-    private void handlePUT(HttpExchange exchange) {
-        // Extract headers
-        Map<String, String> headers = new HashMap<>();
-        for (Map.Entry<String, List<String>> header : exchange.getRequestHeaders().entrySet()) {
-            String value = String.join(", ", header.getValue());
-            headers.put(header.getKey(), value);
-        }
-
-        // Process event with the lamport clock
         int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
         this.lamportClock.processEvent(otherTime);
 
         try {
+            String jsonString = ConversionHelpers.readJSONFile("aggregation-server/weather_data.txt");
 
-            String requestBody = readRequestBody(exchange.getRequestBody());
+            // Send a 200 OK response with the content length of the JSON string
+            exchange.sendResponseHeaders(200, jsonString.getBytes().length);
+            try (OutputStream outputStream = exchange.getResponseBody()) {
+                outputStream.write(jsonString.getBytes());
+            }
+
+            return true;
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        } catch (ParseException e) {
+            System.err.println("Parse exception: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("IO Exception when sending OK response: " + e.getMessage());
+        }
+
+        // Send a 500 Internal Server Error response
+        try {
+            exchange.sendResponseHeaders(500, -1);
+        } catch (IOException e) {
+            System.err.println("IO Exception when sending error response: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    private boolean handlePUT(HttpExchange exchange) {
+        System.out.println("Handling PUT...");
+
+        Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
+
+        int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
+        this.lamportClock.processEvent(otherTime);
+
+        try {
+            String requestBody = ConversionHelpers.requestBodyToString(exchange.getRequestBody());
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("aggregation-server/weather_data.txt"))) {
                 writer.write(requestBody);
             }
-            exchange.sendResponseHeaders(200, 0);
 
+            // Send a 200 OK response
+            exchange.sendResponseHeaders(200, -1);
+
+            return true;
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("IO Exception when sending OK response: " + e.getMessage());
         }
+
+        // Send a 500 Internal Server Error response
+        try {
+            exchange.sendResponseHeaders(500, -1);
+        } catch (IOException e) {
+            System.err.println("IO Exception when sending error response: " + e.getMessage());
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
-        // Create an AggregationServer
         AggregationServer server;
 
-        // Construct the server with optional command-line arguments
         if (args.length > 0) {
             int hostPort = Integer.parseInt(args[0]);
             server = new AggregationServer(hostPort);
@@ -134,7 +138,6 @@ public class AggregationServer {
             server = new AggregationServer();
         }
 
-        // Run the server
         server.startServer();
     }
 }

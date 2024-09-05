@@ -9,56 +9,57 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.*;
 
 public class GETClient implements AggregationClient {
+    // Constants
+    public static final String CLIENT_NAME = "GET_CLIENT";
 
-    LamportClock lamportClock;
+    // Command-line arguments
     public final String serverHostname;
     public final String stationId;
 
+    // Networking
     private final URI serverURI;
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
 
-    private final JSONParser jsonParser;
+    // Synchrony
+    LamportClock lamportClock;
 
     public GETClient(String serverHostname) {
         this(serverHostname, null);
     }
 
     public GETClient(String serverHostname, String stationId) {
-        this.lamportClock = new LamportClockImpl();
         this.serverHostname = serverHostname;
         this.stationId = stationId;
 
-        // Establish permanent connection URI
         String uri = "http://" + this.serverHostname;
         if (this.stationId != null) uri += "?station_id=" + this.stationId;
         this.serverURI = URI.create(uri);
+        this.httpClient = HttpClient.newHttpClient();
 
-        // Setup JSON parser
-        this.jsonParser = new JSONParser();
+        this.lamportClock = new LamportClockImpl();
     }
 
     @Override
     public void startClient()  {
-        // Create HttpClient
-        this.httpClient = HttpClient.newHttpClient();
-
-        // Create a ScheduledExecutorService
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-        // Schedule the task to run every 2 seconds
         scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Sending GET to " + this.serverURI + "...");
-            HttpRequest request = this.createRequest(this.serverURI);
-            HttpResponse<String> response = this.sendRequest(request);
-            processResponse(response);
+            sendRequest();
         }, 0, 2, TimeUnit.SECONDS);
 
-        while (true) {}
+        // Keep application alive
+        try {
+            Thread.sleep(Long.MAX_VALUE);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Application interrupted: " + e.getMessage());
+        }
     }
 
-    @Override
-    public void processCommand() {
-        // Do nothing
+    public void sendRequest() {
+        HttpRequest request = this.createRequest(this.serverURI);
+        HttpResponse<String> response = this.sendRequest(request);
+        processResponse(response);
     }
 
     @Override
@@ -67,6 +68,7 @@ public class GETClient implements AggregationClient {
             .uri(uri)
             .GET()
             .headers(
+                    "User-Agent", "ATOMClient/1/0",
                     "Content-Type", "text/plain",
                     "Lamport-Time", Integer.toString(this.lamportClock.getLamportTime())
             )
@@ -85,9 +87,9 @@ public class GETClient implements AggregationClient {
     @Override
     public void processResponse(HttpResponse<String> response) {
         try {
-            JSONObject jsonObject = (JSONObject) this.jsonParser.parse(response.body());
-            jsonObject.keySet().forEach((Object key) -> {
-                Object value = jsonObject.get(key);
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
+            jsonObject.forEach((key, value) -> {
                 System.out.println(key + ": " + value);
             });
         } catch (ParseException e) {
@@ -96,13 +98,11 @@ public class GETClient implements AggregationClient {
     }
 
     public static void main(String[] args) {
-
         if (args.length == 0) {
             System.err.println("Usage: java GETClient <hostname> <station_id>?");
             return;
         }
 
-        // Construct a get client with the appropriate number of arguments
         String hostname = args[0];
         GETClient getClient;
 
@@ -113,7 +113,6 @@ public class GETClient implements AggregationClient {
             getClient = new GETClient(hostname);
         }
 
-        // Start the client
         getClient.startClient();
     }
 }
