@@ -63,6 +63,7 @@ public class AggregationServer {
 
         int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
         this.lamportClock.processEvent(otherTime);
+        exchange.getResponseHeaders().add("Lamport-Time", String.valueOf(this.lamportClock.getLamportTime()));
 
         try {
             String jsonString = ConversionHelpers.readJSONFile("aggregation-server/weather_data.txt");
@@ -95,11 +96,11 @@ public class AggregationServer {
 
     private boolean handlePUT(HttpExchange exchange) {
         System.out.println("Handling PUT...");
-
         Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
 
         int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
         this.lamportClock.processEvent(otherTime);
+        exchange.getResponseHeaders().add("Lamport-Time", String.valueOf(this.lamportClock.getLamportTime()));
 
         try {
             String requestBody = ConversionHelpers.requestBodyToString(exchange.getRequestBody());

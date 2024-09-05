@@ -41,6 +41,9 @@ public class ContentServer extends AggregationClient {
 
     @Override
     public void processResponse(HttpResponse<String> response) {
+        int otherTime = Integer.parseInt(response.headers().firstValue("LamportTime").orElse("0"));
+        this.lamportClock.processEvent(otherTime);
+
         System.out.println("Response received.");
     }
 

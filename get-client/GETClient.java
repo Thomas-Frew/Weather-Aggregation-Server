@@ -5,6 +5,7 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class GETClient extends AggregationClient {
@@ -42,6 +43,9 @@ public class GETClient extends AggregationClient {
 
     @Override
     public void processResponse(HttpResponse<String> response) {
+        int otherTime = Integer.parseInt(response.headers().firstValue("Lamport-Time").orElse("0"));
+        this.lamportClock.processEvent(otherTime);
+
         try {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
