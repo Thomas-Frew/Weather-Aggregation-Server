@@ -5,20 +5,26 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 public class AggregationServer {
 
     public static final int DEFAULT_PORT = 4567;
+    private final String contentFilename;
 
     private final LamportClock lamportClock;
     private final int serverPort;
 
-    public AggregationServer() {
-        this(DEFAULT_PORT);
+    public AggregationServer(String content_filename) {
+        this(content_filename, DEFAULT_PORT);
     }
 
-    public AggregationServer(int serverPort) {
+    public AggregationServer(String contentFilename, int serverPort) {
+        this.contentFilename = contentFilename;
         this.lamportClock = new LamportClockImpl();
         this.serverPort = serverPort;
     }
@@ -110,8 +116,8 @@ public class AggregationServer {
         System.out.println("Handling PUT...");
         Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
 
-        int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
-        this.lamportClock.processEvent(otherTime);
+        int eventTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
+        this.lamportClock.processEvent(eventTime);
         exchange.getResponseHeaders().add("Lamport-Time", String.valueOf(this.lamportClock.getLamportTime()));
 
         // Send a 200 OK response
@@ -128,9 +134,19 @@ public class AggregationServer {
                 return false;
             }
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("aggregation-server/weather_data.txt"))) {
+            // Clone file
+            Path originalFile = Paths.get(this.contentFilename);
+            Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
+            Files.copy(originalFile, tempFile, StandardCopyOption.REPLACE_EXISTING);
+
+            // Write to temporary file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
                 writer.write(weatherString);
             }
+
+            // Perform swap if Lamport time is greater
+            Files.move(tempFile, originalFile, StandardCopyOption.REPLACE_EXISTING);
+
             exchange.sendResponseHeaders(200, -1);
             return true;
 
@@ -152,13 +168,17 @@ public class AggregationServer {
     }
 
     public static void main(String[] args) {
-        AggregationServer server;
+        if (args.length == 0) {
+            System.err.println("Usage: java AggregationServer <content_filename> <port>?");
+            return;
+        }
 
-        if (args.length > 0) {
-            int hostPort = Integer.parseInt(args[0]);
-            server = new AggregationServer(hostPort);
+        AggregationServer server;
+        if (args.length > 1) {
+            int hostPort = Integer.parseInt(args[1]);
+            server = new AggregationServer(args[0], hostPort);
         } else {
-            server = new AggregationServer();
+            server = new AggregationServer(args[0]);
         }
 
         server.startServer();
