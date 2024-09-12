@@ -63,7 +63,7 @@ public class AggregationServer {
             default -> result = this.handleMiscellaneous(exchange);
         }
 
-        if (!result) System.out.println("Request handler for " + method + " failed");
+        if (!result) System.err.println("Request handler for " + method + " failed");
     }
 
     private boolean handleMiscellaneous(HttpExchange exchange) {
@@ -76,7 +76,6 @@ public class AggregationServer {
         } catch (IOException e) {
             System.err.println("IO Exception when sending 400 response: " + e.getMessage());
         }
-
         return false;
     }
 
@@ -100,11 +99,16 @@ public class AggregationServer {
                 jsonString = FileHelpers.readWeatherFile(this.contentFilename, stationId);
             }
 
-            exchange.sendResponseHeaders(200, jsonString.getBytes().length);
-            try (OutputStream outputStream = exchange.getResponseBody()) {
-                outputStream.write(jsonString.getBytes());
+            if (jsonString != null) {
+                exchange.sendResponseHeaders(200, jsonString.getBytes().length);
+                try (OutputStream outputStream = exchange.getResponseBody()) {
+                    outputStream.write(jsonString.getBytes());
+                }
+                return true;
+            } else {
+                exchange.sendResponseHeaders(404, -1);
+                return false;
             }
-            return true;
 
         } catch (ParseException e) {
             System.err.println("Parse exception: " + e.getMessage());

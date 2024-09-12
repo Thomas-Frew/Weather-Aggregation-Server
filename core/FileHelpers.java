@@ -45,7 +45,7 @@ public class FileHelpers {
                 }
             }
         }
-        return "Not Found";
+        return null;
     }
 
 
@@ -57,7 +57,7 @@ public class FileHelpers {
                 JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
                 return jsonObject.toJSONString();
             } else {
-                return "Not Found";
+                return null;
             }
         }
     }

@@ -47,17 +47,23 @@ public class GETClient extends AggregationClient {
 
     @Override
     public void processResponse(HttpResponse<String> response) {
-        int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
-        this.lamportClock.processEvent(eventTime);
+        int responseStatus = response.statusCode();
 
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
-            jsonObject.forEach((key, value) -> {
-                System.out.println(key + ": " + value);
-            });
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        if (responseStatus == 200) {
+            int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
+            this.lamportClock.processEvent(eventTime);
+
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
+                jsonObject.forEach((key, value) -> {
+                    System.out.println(key + ": " + value);
+                });
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (responseStatus == 404) {
+            System.err.println("Requested data not found.");
         }
     }
 
