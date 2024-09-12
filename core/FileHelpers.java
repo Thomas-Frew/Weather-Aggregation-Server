@@ -62,14 +62,14 @@ public class FileHelpers {
         }
     }
 
-    public static boolean trySwapWeatherFile(String filePath, String stationId, int timestamp, int eventTime, String weatherString) throws IOException, ParseException {
+    public static boolean trySwapWeatherFile(String filePath, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, ParseException, IllegalStateException {
         // Clone file
         Path originalFile = Paths.get(filePath);
         Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
         Files.copy(originalFile, tempFile, StandardCopyOption.REPLACE_EXISTING);
 
         List<String> entries = new ArrayList<>();
-        String newEntry = stationId + DELIMITER + timestamp + DELIMITER + eventTime + DELIMITER + weatherString;
+        String newEntry = stationId + DELIMITER + realTime + DELIMITER + lamportTime + DELIMITER + weatherString;
         entries.add(newEntry.trim());
 
         boolean replaced = false;
@@ -79,9 +79,15 @@ public class FileHelpers {
                 if (entry.trim().isEmpty()) continue;
 
                 String station = entry.split(DELIMITER, 4)[0];
+
                 if (!Objects.equals(station, stationId)) {
                     entries.add(entry.trim());
                 } else {
+                    /*
+                     DEBUG: Usually we'd check to see if the entry is up-to-date
+                     int otherTime = Integer.parseInt(entry.split(DELIMITER, 4)[2]);
+                     if (lamportTime <= otherTime) throw new IllegalStateException("Record is out of date");
+                     */
                     replaced = true;
                 }
             }
