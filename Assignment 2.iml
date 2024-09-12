@@ -6,8 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/aggregation-server" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/get-client" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/content-server" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/unit-tests" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/unit-tests" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

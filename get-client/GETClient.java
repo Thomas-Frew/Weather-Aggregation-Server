@@ -28,9 +28,9 @@ public class GETClient extends AggregationClient {
     }
 
     @Override
-    public HttpRequest createRequest(URI uri) {
+    public HttpRequest createRequest() {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
-        requestBuilder.uri(uri);
+        requestBuilder.uri(this.serverURI);
         requestBuilder.GET();
         requestBuilder.headers(
             "User-agent", "ATOMClient/1/0",

@@ -78,7 +78,7 @@ public class AggregationServer {
             try {
                 FileHelpers.expungeAndSwapWeatherFile(this.contentFilename, realTime);
             } catch (IOException e) {
-                System.err.println("Failed to expunge data: " + e.getMessage());
+                System.err.println("IO exception when expunging data: " + e.getMessage());
             }
         }, 0, 30, TimeUnit.SECONDS);
     }
@@ -91,7 +91,7 @@ public class AggregationServer {
             exchange.sendResponseHeaders(400, -1);
             return true;
         } catch (IOException e) {
-            System.err.println("IO Exception when sending 400 response: " + e.getMessage());
+            System.err.println("IO Exception when sending error: " + e.getMessage());
         }
         return false;
     }
@@ -130,14 +130,14 @@ public class AggregationServer {
         } catch (ParseException e) {
             System.err.println("Parse exception: " + e.getMessage());
         } catch (IOException e) {
-            System.err.println("IO Exception when sending OK response: " + e.getMessage());
+            System.err.println("IO Exception when sending response: " + e.getMessage());
         }
 
         // Send a 500 Internal Server Error response
         try {
             exchange.sendResponseHeaders(500, -1);
         } catch (IOException e) {
-            System.err.println("IO Exception when sending error response: " + e.getMessage());
+            System.err.println("IO Exception when sending error: " + e.getMessage());
         }
 
         return false;
@@ -182,16 +182,16 @@ public class AggregationServer {
                     return true;
 
                 } catch (IOException e) {
-                    System.out.println("Commit failed, retrying...");
+                    System.err.println("Commit failed, retrying...");
                     commitAttempts++;
                 }
             }
             return false;
 
         } catch (IOException e) {
-            System.err.println("IO Exception when sending OK response: " + e.getMessage());
+            System.err.println("IO Exception when sending OK: " + e.getMessage());
         } catch (ParseException e) {
-            System.err.println("IO Exception when parsing request JSON: " + e.getMessage());
+            System.err.println("Parse exception: " + e.getMessage());
         }
 
         // Send a 500 Internal Server Error response
@@ -199,7 +199,7 @@ public class AggregationServer {
         try {
             exchange.sendResponseHeaders(500, -1);
         } catch (IOException e) {
-            System.err.println("IO Exception when sending error response: " + e.getMessage());
+            System.err.println("IO Exception when sending error: " + e.getMessage());
         }
 
         return false;

@@ -18,14 +18,14 @@ public class ContentServer extends AggregationClient {
     }
 
     @Override
-    public HttpRequest createRequest(URI uri) {
+    public HttpRequest createRequest() {
         try {
             // Convert file to JSON string
             String jsonString = FileHelpers.readContentFile(this.contentFilename);
 
             // Create request
             return HttpRequest.newBuilder()
-                    .uri(uri)
+                    .uri(this.serverURI)
                     .PUT(HttpRequest.BodyPublishers.ofString(jsonString))
                     .headers(
                             "User-agent", "ATOMClient/1/0",

@@ -13,9 +13,6 @@ public abstract class AggregationClient {
     public HttpClient httpClient;
     public LamportClock lamportClock;
 
-    private static final int MAX_RETRIES = 5; // Maximum number of retry attempts
-    private static final long RETRY_DELAY_MS = 2000; // Delay between retries in milliseconds
-
     public final void startClient() {
         // Send request every 2 seconds
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -35,7 +32,7 @@ public abstract class AggregationClient {
 
     public final void sendRequestWithRetry() {
         try {
-            HttpRequest request = this.createRequest(this.serverURI);
+            HttpRequest request = this.createRequest();
             HttpResponse<String> response = this.sendRequest(request);
             processResponse(response);
         } catch (IOException | InterruptedException e) {
@@ -43,7 +40,7 @@ public abstract class AggregationClient {
         }
     }
 
-    public abstract HttpRequest createRequest(URI uri);
+    public abstract HttpRequest createRequest();
 
     public final HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
         return this.httpClient.send(request, HttpResponse.BodyHandlers.ofString());
