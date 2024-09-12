@@ -92,19 +92,19 @@ public class AggregationServer {
         // Send a 200 OK response
         try {
             String stationId = headers.getOrDefault("Station-id", null);
-            System.out.println(stationId);
-            System.out.println(otherTime);
-            if (stationId == null) {
-                return false;
+            String jsonString;
 
+            if (stationId == null) {
+                jsonString = FileHelpers.readWeatherFile(this.contentFilename);
             } else {
-                String jsonString = FileHelpers.readWeatherFile(this.contentFilename, stationId);
-                exchange.sendResponseHeaders(200, jsonString.getBytes().length);
-                try (OutputStream outputStream = exchange.getResponseBody()) {
-                    outputStream.write(jsonString.getBytes());
-                }
-                return true;
+                jsonString = FileHelpers.readWeatherFile(this.contentFilename, stationId);
             }
+
+            exchange.sendResponseHeaders(200, jsonString.getBytes().length);
+            try (OutputStream outputStream = exchange.getResponseBody()) {
+                outputStream.write(jsonString.getBytes());
+            }
+            return true;
 
         } catch (ParseException e) {
             System.err.println("Parse exception: " + e.getMessage());
@@ -156,7 +156,7 @@ public class AggregationServer {
                     return true;
 
                 } catch (IOException e) {
-                    System.out.println("Commit failed, retrying..." + e);
+                    System.out.println("Commit failed, retrying...");
                     commitAttempts++;
                 }
             }

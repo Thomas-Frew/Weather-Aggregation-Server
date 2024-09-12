@@ -35,22 +35,32 @@ public class FileHelpers {
 
     public static String readWeatherFile(String filePath, String searchedStation) throws IOException, ParseException {
         String line;
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(":", 4);
-            String station = parts[0];
-            if (Objects.equals(station, searchedStation)) {
-                String jsonString = parts[3];
-                JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
-                return jsonObject.toJSONString();
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 4);
+                String station = parts[0];
+                if (Objects.equals(station, searchedStation)) {
+                    String jsonString = parts[3];
+                    JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
+                    return jsonObject.toJSONString();
+                }
             }
         }
         return "Not Found";
     }
 
+
     public static String readWeatherFile(String filePath) throws IOException, ParseException {
-        return "TBA";
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            String line = reader.readLine();
+            if (line != null) {
+                String jsonString = line.split(":", 4)[3];
+                JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
+                return jsonObject.toJSONString();
+            } else {
+                return "Not Found";
+            }
+        }
     }
 
     public static void trySwapWeatherFile(String filePath, String stationId, int timestamp, int eventTime, String weatherString) throws IOException, ParseException {
