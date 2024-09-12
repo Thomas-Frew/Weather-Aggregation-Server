@@ -9,11 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 import java.util.Map;
 
 public class AggregationServer {
 
     public static final int DEFAULT_PORT = 4567;
+    public static final int MAX_COMMIT_ATTEMPTS = 10;
+
     private final String contentFilename;
 
     private final LamportClock lamportClock;
@@ -82,19 +85,26 @@ public class AggregationServer {
 
         Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
 
-        int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
+        int otherTime = Integer.parseInt(headers.getOrDefault("Lamport-time", "0"));
         this.lamportClock.processEvent(otherTime);
-        exchange.getResponseHeaders().add("Lamport-Time", String.valueOf(this.lamportClock.getLamportTime()));
+        exchange.getResponseHeaders().add("Lamport-time", String.valueOf(this.lamportClock.getLamportTime()));
 
         // Send a 200 OK response
         try {
-            String jsonString = ConversionHelpers.readJSONFile("aggregation-server/weather_data.txt");
-            exchange.sendResponseHeaders(200, jsonString.getBytes().length);
-            try (OutputStream outputStream = exchange.getResponseBody()) {
-                outputStream.write(jsonString.getBytes());
-            }
+            String stationId = headers.getOrDefault("Station-id", null);
+            System.out.println(stationId);
+            System.out.println(otherTime);
+            if (stationId == null) {
+                return false;
 
-            return true;
+            } else {
+                String jsonString = FileHelpers.readWeatherFile(this.contentFilename, stationId);
+                exchange.sendResponseHeaders(200, jsonString.getBytes().length);
+                try (OutputStream outputStream = exchange.getResponseBody()) {
+                    outputStream.write(jsonString.getBytes());
+                }
+                return true;
+            }
 
         } catch (ParseException e) {
             System.err.println("Parse exception: " + e.getMessage());
@@ -116,9 +126,9 @@ public class AggregationServer {
         System.out.println("Handling PUT...");
         Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
 
-        int eventTime = Integer.parseInt(headers.getOrDefault("Lamport-Time", "0"));
+        int eventTime = Integer.parseInt(headers.getOrDefault("Lamport-time", "0"));
         this.lamportClock.processEvent(eventTime);
-        exchange.getResponseHeaders().add("Lamport-Time", String.valueOf(this.lamportClock.getLamportTime()));
+        exchange.getResponseHeaders().add("Lamport-time", String.valueOf(this.lamportClock.getLamportTime()));
 
         // Send a 200 OK response
         try {
@@ -134,21 +144,23 @@ public class AggregationServer {
                 return false;
             }
 
-            // Clone file
-            Path originalFile = Paths.get(this.contentFilename);
-            Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
-            Files.copy(originalFile, tempFile, StandardCopyOption.REPLACE_EXISTING);
+            String stationId = weatherJson.get("id").toString();
 
-            // Write to temporary file
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
-                writer.write(weatherString);
+            // Try to commit this data to memory
+            int commitAttempts = 0;
+            while (commitAttempts < MAX_COMMIT_ATTEMPTS) {
+                try {
+                    int realTime = (int) Instant.now().getEpochSecond();
+                    FileHelpers.trySwapWeatherFile(this.contentFilename, stationId, realTime, eventTime, weatherString);
+                    exchange.sendResponseHeaders(200, -1);
+                    return true;
+
+                } catch (IOException e) {
+                    System.out.println("Commit failed, retrying..." + e);
+                    commitAttempts++;
+                }
             }
-
-            // Perform swap if Lamport time is greater
-            Files.move(tempFile, originalFile, StandardCopyOption.REPLACE_EXISTING);
-
-            exchange.sendResponseHeaders(200, -1);
-            return true;
+            return false;
 
         } catch (IOException e) {
             System.err.println("IO Exception when sending OK response: " + e.getMessage());

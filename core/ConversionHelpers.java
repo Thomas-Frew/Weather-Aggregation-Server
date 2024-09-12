@@ -4,37 +4,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConversionHelpers {
-
-    public static JSONParser jsonParser = new JSONParser();
-
-    public static String readContentFile(String filePath) throws IOException {
-
-        LinkedHashMap<String, String> jsonMap = new LinkedHashMap<>(); // Preserve order
-        String line;
-
-        // Read file into map
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(":", 2);
-            if (parts.length == 2) jsonMap.put(parts[0].trim(), parts[1].trim());
-        }
-
-        JSONObject jsonObject = new JSONObject(jsonMap);
-        return jsonObject.toJSONString();
-    }
-
-    public static String readJSONFile(String filePath) throws IOException, ParseException {
-        FileReader reader = new FileReader(filePath);
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
-        return jsonObject.toJSONString();
-    }
 
     public static JSONObject stringToJSON(String jsonString) throws ParseException {
         JSONParser parser = new JSONParser();

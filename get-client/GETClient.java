@@ -10,6 +10,7 @@ import java.util.concurrent.*;
 
 public class GETClient extends AggregationClient {
     public static final String CLIENT_NAME = "GET_CLIENT";
+
     public final String stationId;
 
     public GETClient(String serverHostname) {
@@ -20,9 +21,7 @@ public class GETClient extends AggregationClient {
         this.serverHostname = serverHostname;
         this.stationId = stationId;
 
-        String uri = "http://" + this.serverHostname;
-        if (this.stationId != null) uri += "?station_id=" + this.stationId;
-        this.serverURI = URI.create(uri);
+        this.serverURI = URI.create("http://" + this.serverHostname);
         this.httpClient = HttpClient.newHttpClient();
 
         this.lamportClock = new LamportClockImpl();
@@ -30,21 +29,26 @@ public class GETClient extends AggregationClient {
 
     @Override
     public HttpRequest createRequest(URI uri) {
-        return HttpRequest.newBuilder()
-            .uri(uri)
-            .GET()
-            .headers(
-                    "User-Agent", "ATOMClient/1/0",
-                    "Content-Type", "text/plain",
-                    "Lamport-Time", Integer.toString(this.lamportClock.getLamportTime())
-            )
-            .build();
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
+        requestBuilder.uri(uri);
+        requestBuilder.GET();
+        requestBuilder.headers(
+            "User-agent", "ATOMClient/1/0",
+            "Content-type", "text/plain",
+            "Lamport-time", Integer.toString(this.lamportClock.getLamportTime())
+        );
+
+        if (this.stationId != null) {
+            requestBuilder.header("Station-id", this.stationId);
+        }
+
+        return requestBuilder.build();
     }
 
     @Override
     public void processResponse(HttpResponse<String> response) {
-        int otherTime = Integer.parseInt(response.headers().firstValue("Lamport-Time").orElse("0"));
-        this.lamportClock.processEvent(otherTime);
+        int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
+        this.lamportClock.processEvent(eventTime);
 
         try {
             JSONParser jsonParser = new JSONParser();
@@ -66,8 +70,8 @@ public class GETClient extends AggregationClient {
         String hostname = args[0];
         GETClient getClient;
 
-        if (args.length > 2) {
-            String station_id = args[2];
+        if (args.length > 1) {
+            String station_id = args[1];
             getClient = new GETClient(hostname, station_id);
         } else {
             getClient = new GETClient(hostname);

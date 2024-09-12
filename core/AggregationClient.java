@@ -38,7 +38,6 @@ public abstract class AggregationClient {
             HttpRequest request = this.createRequest(this.serverURI);
             HttpResponse<String> response = this.sendRequest(request);
             processResponse(response);
-            return; // Exit if request is successful
         } catch (IOException | InterruptedException e) {
             System.err.println("Request failed. Retrying...");
         }

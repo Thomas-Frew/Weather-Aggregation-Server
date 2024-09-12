@@ -21,16 +21,16 @@ public class ContentServer extends AggregationClient {
     public HttpRequest createRequest(URI uri) {
         try {
             // Convert file to JSON string
-            String jsonString = ConversionHelpers.readContentFile(this.contentFilename);
+            String jsonString = FileHelpers.readContentFile(this.contentFilename);
 
             // Create request
             return HttpRequest.newBuilder()
                     .uri(uri)
                     .PUT(HttpRequest.BodyPublishers.ofString(jsonString))
                     .headers(
-                            "User-Agent", "ATOMClient/1/0",
-                            "Content-Type", "text/plain",
-                            "Lamport-Time", Integer.toString(this.lamportClock.getLamportTime())
+                            "User-agent", "ATOMClient/1/0",
+                            "Content-type", "text/plain",
+                            "Lamport-time", Integer.toString(this.lamportClock.getLamportTime())
                     )
                     .build();
 
@@ -41,8 +41,8 @@ public class ContentServer extends AggregationClient {
 
     @Override
     public void processResponse(HttpResponse<String> response) {
-        int otherTime = Integer.parseInt(response.headers().firstValue("LamportTime").orElse("0"));
-        this.lamportClock.processEvent(otherTime);
+        int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
+        this.lamportClock.processEvent(eventTime);
 
         System.out.println("Received response with status code: " + response.statusCode());
     }
