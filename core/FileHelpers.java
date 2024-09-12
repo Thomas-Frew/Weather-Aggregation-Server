@@ -48,7 +48,6 @@ public class FileHelpers {
         return null;
     }
 
-
     public static String readWeatherFile(String filePath) throws IOException, ParseException {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String line = reader.readLine();
@@ -62,7 +61,7 @@ public class FileHelpers {
         }
     }
 
-    public static boolean trySwapWeatherFile(String filePath, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, ParseException, IllegalStateException {
+    public static boolean writeAndSwapWeatherFile(String filePath, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, ParseException, IllegalStateException {
         // Clone file
         Path originalFile = Paths.get(filePath);
         Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
@@ -105,5 +104,35 @@ public class FileHelpers {
 
         // Return whether the file was replaced
         return replaced;
+    }
+
+    public static void expungeAndSwapWeatherFile(String filePath, int realTime) throws IOException, IllegalStateException {
+        // Clone file
+        Path originalFile = Paths.get(filePath);
+        Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
+        Files.copy(originalFile, tempFile, StandardCopyOption.REPLACE_EXISTING);
+
+        List<String> entries = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(tempFile.toFile()))) {
+            String entry;
+            while ((entry = reader.readLine()) != null) {
+                if (entry.trim().isEmpty()) continue;
+
+                int entryRealTime = Integer.parseInt(entry.split(DELIMITER, 4)[1]);
+                if (realTime - entryRealTime <= 30) {
+                    entries.add(entry.trim());
+                }
+            }
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
+            for (String entry : entries) {
+                writer.write(entry);
+                writer.newLine();
+            }
+        }
+
+        // Swap files
+        Files.move(tempFile, originalFile, StandardCopyOption.REPLACE_EXISTING);
     }
 }

@@ -5,12 +5,11 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AggregationServer {
 
@@ -21,6 +20,8 @@ public class AggregationServer {
 
     private final LamportClock lamportClock;
     private final int serverPort;
+
+    private final Object requestLock = false;
 
     public AggregationServer(String content_filename) {
         this(content_filename, DEFAULT_PORT);
@@ -47,6 +48,7 @@ public class AggregationServer {
 
             System.out.println("Server " + server.getAddress() + " started.");
 
+            startMaintenanceLoop();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -56,14 +58,29 @@ public class AggregationServer {
     private void handleRequest(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
 
-        boolean result;
-        switch (method) {
-            case "GET" -> result = this.handleGET(exchange);
-            case "PUT" -> result = this.handlePUT(exchange);
-            default -> result = this.handleMiscellaneous(exchange);
+        synchronized (this.requestLock) {
+            boolean result;
+            switch (method) {
+                case "GET" -> result = this.handleGET(exchange);
+                case "PUT" -> result = this.handlePUT(exchange);
+                default -> result = this.handleMiscellaneous(exchange);
+            }
+            if (!result) System.err.println("Request handler for " + method + " failed");
         }
+    }
 
-        if (!result) System.err.println("Request handler for " + method + " failed");
+    // Method to expunge outdated weather data
+    private void startMaintenanceLoop() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            System.out.println("Purging outdated data...");
+            int realTime = (int) Instant.now().getEpochSecond();
+            try {
+                FileHelpers.expungeAndSwapWeatherFile(this.contentFilename, realTime);
+            } catch (IOException e) {
+                System.err.println("Failed to expunge data: " + e.getMessage());
+            }
+        }, 0, 30, TimeUnit.SECONDS);
     }
 
     private boolean handleMiscellaneous(HttpExchange exchange) {
@@ -155,7 +172,7 @@ public class AggregationServer {
             while (commitAttempts < MAX_COMMIT_ATTEMPTS) {
                 try {
                     int realTime = (int) Instant.now().getEpochSecond();
-                    boolean replaced = FileHelpers.trySwapWeatherFile(this.contentFilename, stationId, realTime, eventTime, weatherString);
+                    boolean replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, eventTime, weatherString);
 
                     if (replaced) {
                         exchange.sendResponseHeaders(200, -1);
