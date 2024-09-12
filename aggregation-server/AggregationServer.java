@@ -151,8 +151,13 @@ public class AggregationServer {
             while (commitAttempts < MAX_COMMIT_ATTEMPTS) {
                 try {
                     int realTime = (int) Instant.now().getEpochSecond();
-                    FileHelpers.trySwapWeatherFile(this.contentFilename, stationId, realTime, eventTime, weatherString);
-                    exchange.sendResponseHeaders(200, -1);
+                    boolean replaced = FileHelpers.trySwapWeatherFile(this.contentFilename, stationId, realTime, eventTime, weatherString);
+
+                    if (replaced) {
+                        exchange.sendResponseHeaders(200, -1);
+                    } else {
+                        exchange.sendResponseHeaders(201, -1);
+                    }
                     return true;
 
                 } catch (IOException e) {

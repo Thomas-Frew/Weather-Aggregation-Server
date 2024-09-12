@@ -15,7 +15,6 @@ import java.util.Objects;
 public class FileHelpers {
 
     public static final String DELIMITER = ":";
-    public static int FILE_COMMIT_ATTEMPTS = 10;
 
     public static String readContentFile(String filePath) throws IOException {
 
@@ -37,7 +36,7 @@ public class FileHelpers {
         String line;
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":", 4);
+                String[] parts = line.split(DELIMITER, 4);
                 String station = parts[0];
                 if (Objects.equals(station, searchedStation)) {
                     String jsonString = parts[3];
@@ -54,7 +53,7 @@ public class FileHelpers {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String line = reader.readLine();
             if (line != null) {
-                String jsonString = line.split(":", 4)[3];
+                String jsonString = line.split(DELIMITER, 4)[3];
                 JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
                 return jsonObject.toJSONString();
             } else {
@@ -63,7 +62,7 @@ public class FileHelpers {
         }
     }
 
-    public static void trySwapWeatherFile(String filePath, String stationId, int timestamp, int eventTime, String weatherString) throws IOException, ParseException {
+    public static boolean trySwapWeatherFile(String filePath, String stationId, int timestamp, int eventTime, String weatherString) throws IOException, ParseException {
         // Clone file
         Path originalFile = Paths.get(filePath);
         Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
@@ -73,14 +72,17 @@ public class FileHelpers {
         String newEntry = stationId + DELIMITER + timestamp + DELIMITER + eventTime + DELIMITER + weatherString;
         entries.add(newEntry.trim());
 
+        boolean replaced = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(tempFile.toFile()))) {
             String entry;
             while ((entry = reader.readLine()) != null) {
                 if (entry.trim().isEmpty()) continue;
 
-                String station = entry.split(":", 4)[0];
+                String station = entry.split(DELIMITER, 4)[0];
                 if (!Objects.equals(station, stationId)) {
                     entries.add(entry.trim());
+                } else {
+                    replaced = true;
                 }
             }
         }
@@ -94,5 +96,8 @@ public class FileHelpers {
 
         // Swap files
         Files.move(tempFile, originalFile, StandardCopyOption.REPLACE_EXISTING);
+
+        // Return whether the file was replaced
+        return replaced;
     }
 }
