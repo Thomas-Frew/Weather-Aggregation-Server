@@ -21,38 +21,46 @@ public class AggregationServer {
     public static final int MAX_COMMIT_ATTEMPTS = 10;
 
     private final String contentFilename;
-
     private final LamportClock lamportClock;
     private final int serverPort;
+    private final boolean testing;
 
     private final Object requestLock = false;
+    private HttpServer server;
+    private ScheduledExecutorService scheduler;
 
     public AggregationServer(String content_filename) {
         this(content_filename, DEFAULT_PORT);
     }
 
     public AggregationServer(String contentFilename, int serverPort) {
+        this(contentFilename, serverPort, false);
+    }
+
+    public AggregationServer(String contentFilename, int serverPort, boolean testing) {
         this.contentFilename = contentFilename;
         this.lamportClock = new LamportClockImpl();
         this.serverPort = serverPort;
+        this.testing = testing;
     }
 
-    void startServer() {
+    public void startServer() {
         try {
             // Create a localhost with the desired port
             InetAddress localhost = InetAddress.getLocalHost();
             InetSocketAddress socketAddress = new InetSocketAddress(localhost, this.serverPort);
 
             // Create the server, mounted on localhost
-            HttpServer server = HttpServer.create(socketAddress, 0);
-            server.createContext("/", this::handleRequest);
+            this.server = HttpServer.create(socketAddress, 0);
+            this.server.createContext("/", this::handleRequest);
 
-            server.setExecutor(null);
-            server.start();
+            this.server.setExecutor(null);
+            this.server.start();
 
-            System.out.println("Server " + server.getAddress() + " started.");
+            System.out.println("Server " + this.server.getAddress() + " started.");
 
-            startMaintenanceLoop();
+            // Only purge outdated data if we aren't testing
+            if (!testing) startMaintenanceLoop();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -75,8 +83,8 @@ public class AggregationServer {
 
     // Method to expunge outdated weather data
     private void startMaintenanceLoop() {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(() -> {
+        this.scheduler = Executors.newScheduledThreadPool(1);
+        this.scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Purging outdated data...");
             int realTime = (int) Instant.now().getEpochSecond();
             try {
@@ -207,6 +215,29 @@ public class AggregationServer {
         }
 
         return false;
+    }
+
+    public void shutdownServer() {
+        // Shut down the HTTP server
+        if (server != null) {
+            System.out.println("Shutting down the server...");
+            server.stop(0);
+        }
+
+        // Shut down the scheduled executor service
+        if (scheduler != null && !scheduler.isShutdown()) {
+            System.out.println("Shutting down the scheduler...");
+            scheduler.shutdown();
+            try {
+                if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                    System.err.println("Scheduler did not terminate in time, forcing shutdown.");
+                    scheduler.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                System.err.println("Scheduler shutdown interrupted, forcing shutdown.");
+                scheduler.shutdownNow();
+            }
+        }
     }
 
     public static void main(String[] args) {

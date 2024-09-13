@@ -14,22 +14,15 @@ public abstract class AggregationClient {
     public URI serverURI;
     public HttpClient httpClient;
     public LamportClock lamportClock;
+    public ScheduledExecutorService scheduler;
 
     public final void startClient() {
         // Send request every 2 seconds
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(() -> {
+        this.scheduler = Executors.newScheduledThreadPool(1);
+        this.scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Sending request to " + this.serverURI + "...");
             sendRequestWithRetry();
         }, 0, 2, TimeUnit.SECONDS);
-
-        // Keep application alive
-        try {
-            Thread.sleep(Long.MAX_VALUE);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.err.println("Application interrupted: " + e.getMessage());
-        }
     }
 
     public final void sendRequestWithRetry() {
@@ -49,4 +42,20 @@ public abstract class AggregationClient {
     }
 
     public abstract void processResponse(HttpResponse<String> response);
+
+    public final void shutdownClient() {
+        if (this.scheduler != null && !this.scheduler.isShutdown()) {
+            this.scheduler.shutdown();
+            try {
+                if (!this.scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                    this.scheduler.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                this.scheduler.shutdownNow();
+            }
+        }
+        // Interrupt the main thread's sleep to allow shutdown
+        Thread.currentThread().interrupt();
+        System.out.println("Client has been shut down.");
+    }
 }

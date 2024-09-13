@@ -49,12 +49,11 @@ public class GETClient extends AggregationClient {
 
     @Override
     public void processResponse(HttpResponse<String> response) {
+        int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
+        this.lamportClock.processEvent(eventTime);
+
         int responseStatus = response.statusCode();
-
         if (responseStatus == 200) {
-            int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
-            this.lamportClock.processEvent(eventTime);
-
             try {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
