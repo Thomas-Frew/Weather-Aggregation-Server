@@ -1,3 +1,7 @@
+package weatheraggregation.test;
+
+import weatheraggregation.core.LamportClock;
+import weatheraggregation.core.LamportClockImpl;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

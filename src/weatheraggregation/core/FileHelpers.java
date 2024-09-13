@@ -1,3 +1,5 @@
+package weatheraggregation.core;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -6,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Objects;
 public class FileHelpers {
 
     public static final String DELIMITER = ":";
+    public static final String TMP_FILENAME = "src/weatheraggregation/aggregationserver/weather_data.tmp";
 
     public static String readContentFile(String filePath) throws IOException {
 
@@ -64,7 +66,7 @@ public class FileHelpers {
     public static boolean writeAndSwapWeatherFile(String filePath, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, ParseException, IllegalStateException {
         // Clone file
         Path originalFile = Paths.get(filePath);
-        Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
+        Path tempFile = Paths.get(TMP_FILENAME);
         Files.copy(originalFile, tempFile, StandardCopyOption.REPLACE_EXISTING);
 
         List<String> entries = new ArrayList<>();
@@ -109,7 +111,7 @@ public class FileHelpers {
     public static void expungeAndSwapWeatherFile(String filePath, int realTime) throws IOException, IllegalStateException {
         // Clone file
         Path originalFile = Paths.get(filePath);
-        Path tempFile = Paths.get("aggregation-server/weather_data.tmp");
+        Path tempFile = Paths.get(TMP_FILENAME);
         Files.copy(originalFile, tempFile, StandardCopyOption.REPLACE_EXISTING);
 
         List<String> entries = new ArrayList<>();

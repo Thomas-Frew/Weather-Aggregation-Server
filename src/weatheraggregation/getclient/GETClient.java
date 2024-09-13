@@ -1,3 +1,7 @@
+package weatheraggregation.getclient;
+
+import weatheraggregation.core.AggregationClient;
+import weatheraggregation.core.LamportClockImpl;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -5,8 +9,6 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Map;
-import java.util.concurrent.*;
 
 public class GETClient extends AggregationClient {
     public static final String CLIENT_NAME = "GET_CLIENT";

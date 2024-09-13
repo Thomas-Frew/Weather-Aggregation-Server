@@ -1,3 +1,5 @@
+package weatheraggregation.aggregationserver;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import org.json.simple.JSONObject;
@@ -10,6 +12,8 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import weatheraggregation.core.*;
 
 public class AggregationServer {
 

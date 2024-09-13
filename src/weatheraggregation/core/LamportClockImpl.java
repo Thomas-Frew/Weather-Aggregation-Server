@@ -1,3 +1,5 @@
+package weatheraggregation.core;
+
 public class LamportClockImpl implements LamportClock {
 
     int lamportTime;

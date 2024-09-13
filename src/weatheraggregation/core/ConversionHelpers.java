@@ -1,3 +1,5 @@
+package weatheraggregation.core;
+
 import com.sun.net.httpserver.Headers;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

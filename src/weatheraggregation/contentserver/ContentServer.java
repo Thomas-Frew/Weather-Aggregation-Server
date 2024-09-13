@@ -1,3 +1,9 @@
+package weatheraggregation.contentserver;
+
+import weatheraggregation.core.AggregationClient;
+import weatheraggregation.core.FileHelpers;
+import weatheraggregation.core.LamportClockImpl;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
