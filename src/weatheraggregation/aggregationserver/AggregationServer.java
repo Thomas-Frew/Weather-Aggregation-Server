@@ -123,7 +123,7 @@ public class AggregationServer {
             String jsonString;
 
             if (stationId == null) {
-                jsonString = FileHelpers.readWeatherFile(this.contentFilename);
+                jsonString = FileHelpers.readWeatherFileFirst(this.contentFilename);
             } else {
                 jsonString = FileHelpers.readWeatherFile(this.contentFilename, stationId);
             }
@@ -184,7 +184,7 @@ public class AggregationServer {
             while (commitAttempts < MAX_COMMIT_ATTEMPTS) {
                 try {
                     int realTime = (int) Instant.now().getEpochSecond();
-                    boolean replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, eventTime, weatherString);
+                    boolean replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, this.lamportClock.getLamportTime(), weatherString);
 
                     if (replaced) {
                         exchange.sendResponseHeaders(200, -1);

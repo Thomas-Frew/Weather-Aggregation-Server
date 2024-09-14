@@ -8,10 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class FileHelpers {
 
@@ -19,8 +16,7 @@ public class FileHelpers {
     public static final String TMP_FILENAME = "src/weatheraggregation/aggregationserver/weather_data.tmp";
 
     public static String readContentFile(String filePath) throws IOException {
-
-        LinkedHashMap<String, String> jsonMap = new LinkedHashMap<>(); // Preserve order
+        HashMap<String, String> jsonMap = new HashMap<>(); // Preserve order
         String line;
 
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -50,18 +46,28 @@ public class FileHelpers {
         return null;
     }
 
-    public static String readWeatherFile(String filePath) throws IOException, ParseException {
+    public static String readWeatherFileFirst(String filePath) throws IOException, ParseException {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String line = reader.readLine();
             if (line != null) {
-                String jsonString = line.split(DELIMITER, 4)[3];
-                JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
-                return jsonObject.toJSONString();
+                return line.split(DELIMITER, 4)[3];
             } else {
                 return null;
             }
         }
     }
+
+    public static List<String[]> readWeatherFileAll(String filePath) throws IOException, ParseException {
+        List<String[]> entries = new ArrayList<>();
+        String line;
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            while ((line = reader.readLine()) != null) {
+                entries.add(line.split(DELIMITER, 4));
+            }
+        }
+        return entries;
+    }
+
 
     public static boolean writeAndSwapWeatherFile(String filePath, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, ParseException, IllegalStateException {
         // Clone file
