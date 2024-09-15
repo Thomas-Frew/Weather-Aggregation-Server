@@ -159,3 +159,14 @@ Tests for ReplicatedContentServers.
 - `failover`: Create a ReplicatedContentServer with two ContentServers. The first ContentServer is missing its AggregationServer, causing failover.
 - `doubleFailover`: Create a ReplicatedContentServer with three ContentServers. The first two ContentServers are missing their AggregationServers, causing two failovers.
 - `failBack`: Create a ReplicatedContentServer with two ContentServers. All ContentServers are missing their AggregationServers, causing continued failover between the two.
+
+## Lamport Clocks
+
+All clients and servers are synchronised with Lamport clocks (LamportClockImpl for its implementation).
+This keeps clients and servers operating in-order, as specified by the assignment page.
+
+Notably, the Lamport time of a ContentServer's commit is stored with the data.
+If weather data with the same station ID but a smaller lamport time is received, it will be rejected with a 500 error.
+
+> This means that if data already exists in the AggregationServer, and a ContentServer is restarted, its first commit will be rejected. Don't worry!
+> Future commits will not be rejected as the ContentServer will now have an up-to-date Lamport time.
