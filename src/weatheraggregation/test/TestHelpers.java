@@ -15,10 +15,10 @@ public class TestHelpers {
     public static final String DIRECTORY = "src/weatheraggregation/test/";
     public static final String WEATHER_DATA_FILENAME = DIRECTORY + "test_weather_data.txt";
 
-    public static void swapFiles(String newFilePath, String oldFilePath) throws IOException {
-        FileHelpers.tryCreateFile(oldFilePath);
-        Path oldFile = Paths.get(oldFilePath);
-        Path newFile = Paths.get(newFilePath);
-        Files.copy(newFile, oldFile, StandardCopyOption.REPLACE_EXISTING);
+    public static void swapFiles(String newFilename, String oldFilename) throws IOException {
+        FileHelpers.tryCreateFile(oldFilename);
+        Path oldFilePath = Paths.get(oldFilename);
+        Path newFilePath = Paths.get(newFilename);
+        Files.copy(newFilePath, oldFilePath, StandardCopyOption.REPLACE_EXISTING);
     }
 }
