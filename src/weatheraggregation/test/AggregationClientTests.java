@@ -57,15 +57,15 @@ public class AggregationClientTests {
         List<String[]> entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);
         assertEquals(1, entries.size());
 
-        // Wait 16 seconds
-        TimeUnit.SECONDS.sleep(16);
+        // Wait 15 seconds
+        TimeUnit.SECONDS.sleep(15);
 
         // Ensure that the outdated data has not been expunged
         entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);
         assertEquals(1, entries.size());
 
         // Wait 15 more seconds
-        TimeUnit.SECONDS.sleep(15);
+        TimeUnit.SECONDS.sleep(16);
 
         // Ensure that the outdated data has been expunged
         entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);

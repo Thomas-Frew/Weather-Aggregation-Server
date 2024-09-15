@@ -7,6 +7,11 @@ import java.util.*;
 
 public class ConversionHelpers {
 
+    /**
+     * Convert a Headers object to a map of headers.
+     * @param headers The Headers object.
+     * @return The returned map of headers.
+     */
     public static Map<String, String> requestHeadersToMap(Headers headers) {   // Extract headers
         Map<String, String> headersMap = new HashMap<>();
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
@@ -16,7 +21,13 @@ public class ConversionHelpers {
         return headersMap;
     }
 
-    public static String requestBodyToString(InputStream inputStream) throws IOException {
+    /**
+     * Convert an InputStream object to a String of its contents.
+     * @param inputStream The InputStream object.
+     * @return The returned String of its contents.
+     * @throws IOException The InputStream might throw an exception.
+     */
+    public static String inputStreamToString(InputStream inputStream) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
 

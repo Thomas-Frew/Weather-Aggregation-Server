@@ -168,7 +168,7 @@ public class AggregationServer {
 
         // Send a 200 OK response
         try {
-            String weatherString = ConversionHelpers.requestBodyToString(exchange.getRequestBody());
+            String weatherString = ConversionHelpers.inputStreamToString(exchange.getRequestBody());
             if (weatherString.length() == 3) {
                 exchange.sendResponseHeaders(204, -1);
                 return false;
