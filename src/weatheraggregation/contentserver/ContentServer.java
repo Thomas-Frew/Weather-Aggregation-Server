@@ -14,8 +14,13 @@ public class ContentServer extends AggregationClient {
     public final String contentFilename;
 
     public ContentServer(String serverHostname, String contentFilename) {
+        this(serverHostname, contentFilename, null);
+    }
+
+    public ContentServer(String serverHostname, String contentFilename, Runnable shutdownCallback) {
         this.serverHostname = serverHostname;
         this.contentFilename = contentFilename;
+        this.shutdownCallback = shutdownCallback;
 
         this.serverURI = URI.create("http://" + this.serverHostname);
         this.httpClient = HttpClient.newHttpClient();

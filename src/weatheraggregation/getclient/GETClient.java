@@ -68,7 +68,7 @@ public class GETClient extends AggregationClient {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         if (args.length == 0) {
             System.err.println("Usage: java GETClient <hostname> <station_id>?");
             return;

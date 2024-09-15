@@ -168,6 +168,9 @@ public class GETClientTests {
         server.shutdownServer();
     }
 
+    /*
+    Integration Test: Test regular execution to see that data is fetched every 2 seconds.
+     */
     @Test
     public void regularRequestsSent() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
