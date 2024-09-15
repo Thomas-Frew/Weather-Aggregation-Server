@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import weatheraggregation.aggregationserver.AggregationServer;
+import weatheraggregation.core.AggregationClient;
 import weatheraggregation.getclient.GETClient;
 
 public class GETClientTests {
@@ -172,7 +173,7 @@ public class GETClientTests {
     Integration Test: Test regular execution to see that data is fetched every 2 seconds.
      */
     @Test
-    public void regularRequestsSent() throws IOException, InterruptedException, ParseException {
+    public void regularRequestsSent() throws IOException, InterruptedException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -182,12 +183,14 @@ public class GETClientTests {
         server.startServer();
         client.startClient();
 
-        TimeUnit.SECONDS.sleep(3);
+        // Sleep for 1 cycle and 1 second (enough time for 2 requests to be made)
+        TimeUnit.SECONDS.sleep(AggregationClient.SLEEP_SECONDS + 1);
 
         // Test that the lamport time has been updated
         assertEquals(4, client.lamportClock.getLamportTime());
 
         // Shutdown the server
+        client.shutdownClient();
         server.shutdownServer();
     }
 }

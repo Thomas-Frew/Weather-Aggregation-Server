@@ -4,6 +4,7 @@ import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import weatheraggregation.aggregationserver.AggregationServer;
 import weatheraggregation.contentserver.ContentServer;
+import weatheraggregation.core.AggregationClient;
 import weatheraggregation.core.FileHelpers;
 import weatheraggregation.getclient.GETClient;
 
@@ -235,7 +236,7 @@ Try to send data with some valid fields, but no ID
     Integration Test: Test regular execution to see that data is pushed every 2 seconds.
      */
     @Test
-    public void regularRequestsSent() throws IOException, InterruptedException, ParseException {
+    public void regularRequestsSent() throws IOException, ParseException, InterruptedException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "content_data_mixed.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -245,7 +246,8 @@ Try to send data with some valid fields, but no ID
         server.startServer();
         client.startClient();
 
-        TimeUnit.SECONDS.sleep(3);
+        // Sleep for 1 cycle and 1 second (enough time for 2 requests to be made)
+        TimeUnit.SECONDS.sleep(AggregationClient.SLEEP_SECONDS + 1);
 
         // Test that the lamport time has been updated
         assertEquals(4, client.lamportClock.getLamportTime());
@@ -256,6 +258,7 @@ Try to send data with some valid fields, but no ID
         assertEquals(entries.getFirst()[2], "3");
 
         // Shutdown the server
+        client.shutdownClient();
         server.shutdownServer();
     }
 }

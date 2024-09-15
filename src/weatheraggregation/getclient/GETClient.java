@@ -11,8 +11,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class GETClient extends AggregationClient {
-    public static final String CLIENT_NAME = "GET_CLIENT";
-
     public final String stationId;
 
     public GETClient(String serverHostname) {

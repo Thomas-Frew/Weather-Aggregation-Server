@@ -3,14 +3,27 @@ package weatheraggregation.contentserver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+class CallbackContentServer extends ContentServer {
+    private final Runnable shutdownCallback;
+
+    public CallbackContentServer(String hostname, String contentFilename, Runnable shutdownCallback) {
+        super(hostname, contentFilename);
+        this.shutdownCallback = shutdownCallback;
+    }
+
+    public final void shutdownClient() {
+        super.shutdownClient();
+        if (shutdownCallback != null) shutdownCallback.run();
+    }
+}
 
 public class ReplicatedContentServer {
     private final List<ContentServer> contentServers;
     private int primaryIndex;
     public ScheduledExecutorService scheduler;
+    private boolean running = true;
 
     public ReplicatedContentServer(List<String> serverHostnames, String contentFilename) {
         this.contentServers = new ArrayList<>();
@@ -26,13 +39,20 @@ public class ReplicatedContentServer {
     }
 
     public void promoteNextServer() {
-        primaryIndex = (primaryIndex + 1) % contentServers.size();
-        System.out.println("Promoted server " + primaryIndex + " to primary.");
-        this.startPrimary();
+        if (running) {
+            primaryIndex = (primaryIndex + 1) % contentServers.size();
+            System.out.println("Promoted server " + primaryIndex + " to primary.");
+            this.startPrimary();
+        }
     }
 
     public void startPrimary() {
         this.getPrimaryServer().startClient();
+    }
+
+    public void shutdownPrimary() {
+        running = false;
+        this.getPrimaryServer().shutdownClient();
     }
 
     public static void main(String[] args) {

@@ -17,27 +17,38 @@ public abstract class AggregationClient {
     public LamportClock lamportClock;
     public ScheduledExecutorService scheduler;
 
+    public int attempts = 0;
+
+    public static final int MAX_RETRIES = 3;
+    public static final int SLEEP_SECONDS = 2;
+
     public final void startClient() {
-        // Send request every 2 seconds
         this.scheduler = Executors.newScheduledThreadPool(1);
         this.scheduler.scheduleAtFixedRate(() -> {
             System.out.println("Sending request to " + this.serverURI + "...");
             try {
-                sendRequestWithRetry();
-            } catch (RuntimeException e) {
+                if (sendRequestWithRetry()) {
+                    attempts = 0;
+                } else {
+                    attempts++;
+                    if (attempts == MAX_RETRIES) throw new ConnectException("Could not connect to server.");
+                }
+            } catch (ConnectException e) {
+                System.err.println("Could not connect to server.");
                 this.shutdownClient();
             }
-        }, 0, 2, TimeUnit.SECONDS);
+        }, 0, SLEEP_SECONDS, TimeUnit.SECONDS);
     }
 
-    public final void sendRequestWithRetry() throws RuntimeException {
+    public final boolean sendRequestWithRetry() throws ConnectException {
         try {
             HttpRequest request = this.createRequest();
             HttpResponse<String> response = this.sendRequest(request);
             processResponse(response);
+            return true;
         } catch (IOException | InterruptedException e) {
             System.err.println("Request failed. Retrying...");
-            throw new RuntimeException();
+            return false;
         }
     }
 
@@ -51,17 +62,8 @@ public abstract class AggregationClient {
 
     public void shutdownClient() {
         if (this.scheduler != null && !this.scheduler.isShutdown()) {
-            this.scheduler.shutdown();
-            try {
-                if (!this.scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
-                    this.scheduler.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                this.scheduler.shutdownNow();
-            }
+            this.scheduler.shutdownNow();
         }
-        // Interrupt the main thread's sleep to allow shutdown
-        Thread.currentThread().interrupt();
         System.out.println("Client has been shut down.");
     }
 }
