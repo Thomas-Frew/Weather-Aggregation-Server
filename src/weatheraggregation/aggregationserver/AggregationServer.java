@@ -2,8 +2,6 @@ package weatheraggregation.aggregationserver;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -14,6 +12,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import weatheraggregation.core.*;
+import weatheraggregation.jsonparser.CustomJsonParser;
+import weatheraggregation.jsonparser.CustomParseException;
 
 public class AggregationServer {
 
@@ -142,7 +142,7 @@ public class AggregationServer {
                 return false;
             }
 
-        } catch (ParseException e) {
+        } catch (CustomParseException e) {
             System.err.println("Parse exception: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("IO Exception when sending response: " + e.getMessage());
@@ -174,13 +174,13 @@ public class AggregationServer {
                 return false;
             }
 
-            JSONObject weatherJson = ConversionHelpers.stringToJSON(weatherString);
+            Map<String, String> weatherJson = CustomJsonParser.stringToJson(weatherString);
             if (!weatherJson.containsKey("id")) {
                 exchange.sendResponseHeaders(500, -1);
                 return false;
             }
 
-            String stationId = weatherJson.get("id").toString();
+            String stationId = weatherJson.get("id");
 
             // Try to commit this data to memory
             int commitAttempts = 0;
@@ -205,7 +205,7 @@ public class AggregationServer {
 
         } catch (IOException e) {
             System.err.println("IO Exception when sending OK: " + e.getMessage());
-        } catch (ParseException e) {
+        } catch (CustomParseException e) {
             System.err.println("Parse exception: " + e.getMessage());
         }
 

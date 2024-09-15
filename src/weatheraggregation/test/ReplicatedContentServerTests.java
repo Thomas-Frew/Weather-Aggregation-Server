@@ -1,17 +1,11 @@
 package weatheraggregation.test;
 
-import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import weatheraggregation.aggregationserver.AggregationServer;
-import weatheraggregation.contentserver.ContentServer;
 import weatheraggregation.contentserver.ReplicatedContentServer;
 import weatheraggregation.core.AggregationClient;
-import weatheraggregation.core.FileHelpers;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

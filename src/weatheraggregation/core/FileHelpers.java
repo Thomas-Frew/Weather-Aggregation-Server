@@ -1,7 +1,7 @@
 package weatheraggregation.core;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
+import weatheraggregation.jsonparser.CustomJsonParser;
+import weatheraggregation.jsonparser.CustomParseException;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -36,27 +36,24 @@ public class FileHelpers {
             if (parts.length == 2) jsonMap.put(parts[0].trim(), parts[1].trim());
         }
 
-        JSONObject jsonObject = new JSONObject(jsonMap);
-        return jsonObject.toJSONString();
+        return CustomJsonParser.jsonToString(jsonMap);
     }
 
-    public static String readWeatherFile(String filename, String searchedStation) throws IOException, ParseException {
+    public static String readWeatherFile(String filename, String searchedStation) throws IOException, CustomParseException {
         String line;
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filename))) {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(DELIMITER, 4);
                 String station = parts[0];
                 if (Objects.equals(station, searchedStation)) {
-                    String jsonString = parts[3];
-                    JSONObject jsonObject = ConversionHelpers.stringToJSON(jsonString);
-                    return jsonObject.toJSONString();
+                    return parts[3];
                 }
             }
         }
         return null;
     }
 
-    public static String readWeatherFileFirst(String filename) throws IOException, ParseException {
+    public static String readWeatherFileFirst(String filename) throws IOException, CustomParseException {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filename))) {
             String line = reader.readLine();
             if (line != null) {
@@ -67,7 +64,7 @@ public class FileHelpers {
         }
     }
 
-    public static List<String[]> readWeatherFileAll(String filename) throws IOException, ParseException {
+    public static List<String[]> readWeatherFileAll(String filename) throws IOException, CustomParseException {
         List<String[]> entries = new ArrayList<>();
         String line;
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filename))) {
@@ -79,7 +76,7 @@ public class FileHelpers {
     }
 
 
-    public static boolean writeAndSwapWeatherFile(String filename, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, ParseException, IllegalStateException {
+    public static boolean writeAndSwapWeatherFile(String filename, String stationId, int realTime, int lamportTime, String weatherString) throws IOException, CustomParseException, IllegalStateException {
         // Clone file
         Path originalFilePath = Paths.get(filename);
         Path tempFilePath = Paths.get(TMP_FILENAME);

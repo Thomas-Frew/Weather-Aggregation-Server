@@ -1,12 +1,11 @@
 package weatheraggregation.test;
 
-import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import weatheraggregation.aggregationserver.AggregationServer;
 import weatheraggregation.contentserver.ContentServer;
 import weatheraggregation.core.AggregationClient;
 import weatheraggregation.core.FileHelpers;
-import weatheraggregation.getclient.GETClient;
+import weatheraggregation.jsonparser.*;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;
@@ -22,7 +21,7 @@ public class ContentServerTests {
     Try to send data to the server for the first time
     */
     @Test
-    public void sendFirstData() throws IOException, InterruptedException, ParseException {
+    public void sendFirstData() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -54,7 +53,7 @@ public class ContentServerTests {
     Try to send data to the server for the first time
     */
     @Test
-    public void sendRepeatedData() throws IOException, InterruptedException, ParseException {
+    public void sendRepeatedData() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -103,7 +102,7 @@ public class ContentServerTests {
     Try to send data to the server for the first time
     */
     @Test
-    public void sendDifferentData() throws IOException, InterruptedException, ParseException {
+    public void sendDifferentData() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -236,7 +235,7 @@ Try to send data with some valid fields, but no ID
     Integration Test: Test regular execution to see that data is pushed every 2 seconds.
      */
     @Test
-    public void regularRequestsSent() throws IOException, ParseException, InterruptedException {
+    public void regularRequestsSent() throws IOException, CustomParseException, InterruptedException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/content_data_mixed.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);

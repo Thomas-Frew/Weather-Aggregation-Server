@@ -2,13 +2,14 @@ package weatheraggregation.getclient;
 
 import weatheraggregation.core.AggregationClient;
 import weatheraggregation.core.LamportClockImpl;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import weatheraggregation.jsonparser.CustomJsonParser;
+import weatheraggregation.jsonparser.CustomParseException;
+
 import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 
 public class GETClient extends AggregationClient {
     public final String stationId;
@@ -53,12 +54,9 @@ public class GETClient extends AggregationClient {
         int responseStatus = response.statusCode();
         if (responseStatus == 200) {
             try {
-                JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
-                jsonObject.forEach((key, value) -> {
-                    System.out.println(key + ": " + value);
-                });
-            } catch (ParseException e) {
+                Map<String, String> jsonObject = CustomJsonParser.stringToJson(response.body());
+                jsonObject.forEach((key, value) -> System.out.println(key + ": " + value));
+            } catch (CustomParseException e) {
                 throw new RuntimeException(e);
             }
         } else if (responseStatus == 404) {

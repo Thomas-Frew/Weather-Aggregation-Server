@@ -1,19 +1,11 @@
 package weatheraggregation.core;
 
 import com.sun.net.httpserver.Headers;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.*;
 
 public class ConversionHelpers {
-
-    public static JSONObject stringToJSON(String jsonString) throws ParseException {
-        JSONParser parser = new JSONParser();
-        return (JSONObject) parser.parse(jsonString);
-    }
 
     public static Map<String, String> requestHeadersToMap(Headers headers) {   // Extract headers
         Map<String, String> headersMap = new HashMap<>();

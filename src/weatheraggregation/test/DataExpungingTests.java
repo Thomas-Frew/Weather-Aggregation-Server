@@ -1,14 +1,10 @@
 package weatheraggregation.test;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import weatheraggregation.aggregationserver.AggregationServer;
 import weatheraggregation.contentserver.ContentServer;
-import weatheraggregation.core.AggregationClient;
 import weatheraggregation.core.FileHelpers;
-import weatheraggregation.getclient.GETClient;
+import weatheraggregation.jsonparser.*;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;
@@ -23,7 +19,7 @@ public class DataExpungingTests {
     Purge all outdated data on startup
     */
     @Test
-    public void expungeDataOnStartup() throws IOException, InterruptedException, ParseException {
+    public void expungeDataOnStartup() throws IOException, InterruptedException, CustomParseException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, false);
@@ -46,7 +42,7 @@ public class DataExpungingTests {
     Purge all outdated data on startup
     */
     @Test
-    public void expungeDataRegularly() throws IOException, InterruptedException, ParseException {
+    public void expungeDataRegularly() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, false);

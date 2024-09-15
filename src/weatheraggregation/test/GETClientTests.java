@@ -1,26 +1,26 @@
 package weatheraggregation.test;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.junit.Test;
+import weatheraggregation.aggregationserver.AggregationServer;
+import weatheraggregation.core.AggregationClient;
+import weatheraggregation.jsonparser.*;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
-import weatheraggregation.aggregationserver.AggregationServer;
-import weatheraggregation.core.AggregationClient;
 import weatheraggregation.getclient.GETClient;
+import weatheraggregation.jsonparser.CustomJsonParser;
 
 public class GETClientTests {
     /*
     Try to fetch the only data entry from a server.
      */
     @Test
-    public void fetchSoleData() throws IOException, InterruptedException, ParseException {
+    public void fetchSoleData() throws IOException, InterruptedException, CustomParseException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -37,8 +37,9 @@ public class GETClientTests {
         assertEquals(200, responseStatus);
 
         // Test headers for correctness
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
+        System.out.println(response.body());
+        Map<String, String> jsonObject = CustomJsonParser.stringToJson(response.body());
+        System.out.println(jsonObject);
         assertEquals("CityTest1", jsonObject.get("name"));
         assertEquals("TEST00001", jsonObject.get("id"));
 
@@ -53,7 +54,7 @@ public class GETClientTests {
     Try to fetch the most recent data entry from a server.
      */
     @Test
-    public void fetchMostRecentData() throws IOException, InterruptedException, ParseException {
+    public void fetchMostRecentData() throws IOException, InterruptedException, CustomParseException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -70,8 +71,7 @@ public class GETClientTests {
         assertEquals(200, responseStatus);
 
         // Test headers for correctness
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
+        Map<String, String> jsonObject = CustomJsonParser.stringToJson(response.body());
         assertEquals("CityTest3", jsonObject.get("name"));
         assertEquals("TEST00003", jsonObject.get("id"));
 
@@ -86,7 +86,7 @@ public class GETClientTests {
     Try to fetch a specific data entry from a server.
      */
     @Test
-    public void fetchSpecificData() throws IOException, InterruptedException, ParseException {
+    public void fetchSpecificData() throws IOException, InterruptedException, CustomParseException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -103,8 +103,7 @@ public class GETClientTests {
         assertEquals(200, responseStatus);
 
         // Test headers for correctness
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(response.body());
+        Map<String, String> jsonObject = CustomJsonParser.stringToJson(response.body());
         assertEquals("CityTest2", jsonObject.get("name"));
         assertEquals("TEST00002", jsonObject.get("id"));
 
@@ -119,7 +118,7 @@ public class GETClientTests {
     Try to fetch a non-existent data entry from a server.
      */
     @Test
-    public void fetchMissingData() throws IOException, InterruptedException, ParseException {
+    public void fetchMissingData() throws IOException, InterruptedException, CustomParseException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
@@ -146,7 +145,7 @@ public class GETClientTests {
     Try to fetch data from a server that has no contents.
      */
     @Test
-    public void fetchNoData() throws IOException, InterruptedException, ParseException {
+    public void fetchNoData() throws IOException, InterruptedException, CustomParseException {
         // Set up the file, server and client
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
