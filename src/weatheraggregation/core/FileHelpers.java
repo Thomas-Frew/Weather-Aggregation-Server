@@ -127,7 +127,7 @@ public class FileHelpers {
                 if (entry.trim().isEmpty()) continue;
 
                 int entryRealTime = Integer.parseInt(entry.split(DELIMITER, 4)[1]);
-                if (realTime - entryRealTime <= 30) {
+                if (realTime - entryRealTime < 30) {
                     entries.add(entry.trim());
                 }
             }
