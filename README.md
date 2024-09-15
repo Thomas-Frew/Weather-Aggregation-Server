@@ -104,10 +104,18 @@ Upon running this command, the ReplicatedContentServer will elect a ContentServe
 If this server shuts down, the next primary in the list is started. 
 The selection of primaries cycles back to the front of the list after the Nth one shuts down.
 
-## Test Coverage
+## Tests and Test Coverage
 
 A lot of effort has been put into producing tests with significant coverage. 
 Each file in `/src/weatheraggregation/test` contains a test suite associated with one class in the system (except `MixedTests`).
+
+Run the tests by running the TestRunner class in IntelliJ, or by compiling with Maven using:
+```
+mvn test
+```
+
+> Note: Some integration tests take a while (up to 35 seconds) to execute. Don't worry!
+> Testing the system's "natural" behaviour takes some time.
 
 ### AggregationServerTests
 

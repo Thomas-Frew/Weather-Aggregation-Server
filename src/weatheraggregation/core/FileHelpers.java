@@ -141,7 +141,6 @@ public class FileHelpers {
                 } else {
                     // Reject the new entry if it is out of date
                     int otherTime = Integer.parseInt(entry.split(ITEM_DELIMITER, 4)[2]);
-                    System.out.println(otherTime + " " + lamportTime);
                     if (lamportTime <= otherTime) throw new IllegalStateException("Record is out of date");
                     replaced = true;
                 }
