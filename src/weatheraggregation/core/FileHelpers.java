@@ -15,6 +15,16 @@ public class FileHelpers {
     public static final String DELIMITER = ":";
     public static final String TMP_FILENAME = "src/weatheraggregation/aggregationserver/weather_data.tmp";
 
+    public static void tryCreateFile(String filePath) {
+        Path oldFilePath = Paths.get(filePath);
+        if (Files.notExists(oldFilePath)) {
+            try {
+                Files.createFile(oldFilePath);
+            } catch (IOException e) {
+                System.err.println("Couldn't create weather data file.");
+            }
+        }
+    }
     public static String readContentFile(String filePath) throws IOException {
         HashMap<String, String> jsonMap = new HashMap<>(); // Preserve order
         String line;

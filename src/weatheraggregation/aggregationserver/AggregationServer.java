@@ -42,6 +42,9 @@ public class AggregationServer {
         this.lamportClock = new LamportClockImpl();
         this.serverPort = serverPort;
         this.testing = testing;
+
+        // Try creating the file if it doesn't exist
+        FileHelpers.tryCreateFile(contentFilename);
     }
 
     public void startServer() {
