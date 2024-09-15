@@ -36,7 +36,7 @@ public class ReplicatedContentServerTests {
     public void initialConfigurationValid() {
         // Set up the replicatedContentServer with two hostnames
         List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
-        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Check that the first hostname is the primary
         assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_1);
@@ -54,7 +54,7 @@ public class ReplicatedContentServerTests {
 
         // Set up the replicatedContentServer with two hostnames
         List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
-        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Start up the aggregationServers
         server1.startServer();
@@ -84,7 +84,7 @@ public class ReplicatedContentServerTests {
 
         // Set up the replicatedContentServer with two hostnames
         List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
-        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Start up the aggregationServer
         server2.startServer();
@@ -112,7 +112,7 @@ public class ReplicatedContentServerTests {
 
         // Set up the replicatedContentServer with two hostnames
         List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2, REPLICA_HOSTNAME_3);
-        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Start up the aggregationServer
         server3.startServer();
@@ -140,7 +140,7 @@ public class ReplicatedContentServerTests {
 
         // Set up the replicatedContentServer with two hostnames
         List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
-        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Start up the replicatedContentServer and wait to fail over
         replicatedClient.startPrimary();
