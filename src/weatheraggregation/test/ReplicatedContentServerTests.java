@@ -48,7 +48,7 @@ public class ReplicatedContentServerTests {
     @Test
     public void noFailover() throws IOException, InterruptedException {
         // Set up the aggregationServers
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server1 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_1, true);
         AggregationServer server2 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_2, true);
 
@@ -79,7 +79,7 @@ public class ReplicatedContentServerTests {
     @Test
     public void failover() throws IOException, InterruptedException {
         // Set up the aggregationServer
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server2 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_2, true);
 
         // Set up the replicatedContentServer with two hostnames
@@ -107,7 +107,7 @@ public class ReplicatedContentServerTests {
     @Test
     public void doubleFailover() throws IOException, InterruptedException {
         // Set up the aggregationServer
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server3 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_3, true);
 
         // Set up the replicatedContentServer with two hostnames
@@ -136,7 +136,7 @@ public class ReplicatedContentServerTests {
     @Test
     public void failBack() throws IOException, InterruptedException {
         // Set up the aggregationServer
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
 
         // Set up the replicatedContentServer with two hostnames
         List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);

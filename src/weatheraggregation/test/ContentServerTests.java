@@ -24,9 +24,9 @@ public class ContentServerTests {
     @Test
     public void sendFirstData() throws IOException, InterruptedException, ParseException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Make the request and get the response
         server.startServer();
@@ -56,9 +56,9 @@ public class ContentServerTests {
     @Test
     public void sendRepeatedData() throws IOException, InterruptedException, ParseException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Make the request and get the response
         server.startServer();
@@ -105,9 +105,9 @@ public class ContentServerTests {
     @Test
     public void sendDifferentData() throws IOException, InterruptedException, ParseException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Make the request and get the response
         server.startServer();
@@ -128,7 +128,7 @@ public class ContentServerTests {
         assertEquals(2, client.lamportClock.getLamportTime());
 
         // Create a new server and send a new request
-        client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "content_data_2.tst");
+        client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_2.tst");
         request = client.createRequest();
         response = client.sendRequest(request);
         client.processResponse(response);
@@ -157,9 +157,9 @@ public class ContentServerTests {
     @Test
     public void sendDataWithoutValidFields() throws IOException, InterruptedException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "chat_content_data.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/chat_content_data.tst");
 
         // Make the request and get the response
         server.startServer();
@@ -184,9 +184,9 @@ public class ContentServerTests {
     @Test
     public void sendDataWithoutID() throws IOException, InterruptedException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "no_id_content_data.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/no_id_content_data.tst");
 
         // Make the request and get the response
         server.startServer();
@@ -211,9 +211,9 @@ Try to send data with some valid fields, but no ID
     @Test
     public void sendEmptyJSON() throws IOException, InterruptedException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "empty_content_data.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/empty_content_data.tst");
 
         // Make the request and get the response
         server.startServer();
@@ -238,9 +238,9 @@ Try to send data with some valid fields, but no ID
     @Test
     public void regularRequestsSent() throws IOException, ParseException, InterruptedException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "content_data_mixed.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/content_data_mixed.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "content_data_mixed.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_mixed.tst");
 
         // Make the request and get the response
         server.startServer();

@@ -22,7 +22,7 @@ public class GETClientTests {
     @Test
     public void fetchSoleData() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
@@ -55,7 +55,7 @@ public class GETClientTests {
     @Test
     public void fetchMostRecentData() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
@@ -88,7 +88,7 @@ public class GETClientTests {
     @Test
     public void fetchSpecificData() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME, "TEST00002");
 
@@ -121,7 +121,7 @@ public class GETClientTests {
     @Test
     public void fetchMissingData() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/3_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME, "MISSING");
 
@@ -148,7 +148,7 @@ public class GETClientTests {
     @Test
     public void fetchNoData() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
@@ -175,7 +175,7 @@ public class GETClientTests {
     @Test
     public void regularRequestsSent() throws IOException, InterruptedException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 

@@ -25,7 +25,7 @@ public class DataExpungingTests {
     @Test
     public void expungeDataOnStartup() throws IOException, InterruptedException, ParseException {
         // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, false);
 
         // Start the aggregation server
@@ -48,9 +48,9 @@ public class DataExpungingTests {
     @Test
     public void expungeDataRegularly() throws IOException, InterruptedException, ParseException {
         // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, false);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "content_data_1.tst");
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
         // Make the request and get the response
         server.startServer();
