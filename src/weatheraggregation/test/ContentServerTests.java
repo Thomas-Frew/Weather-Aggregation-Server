@@ -138,7 +138,7 @@ public class ContentServerTests {
         // Check if the file contents match what we expect
         entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);
         assertEquals(entries.getFirst()[0], "IDS00002");
-        assertEquals(entries.getFirst()[2], "2");
+        assertEquals(entries.getFirst()[2], "1");
         assertEquals(entries.get(1)[0], "IDS00001");
         assertEquals(entries.get(1)[2], "1");
 
@@ -225,6 +225,49 @@ public class ContentServerTests {
 
         // Test that the lamport time has been updated
         assertEquals(2, client.lamportClock.getLamportTime());
+
+        // Shutdown the server
+        server.shutdownServer();
+    }
+
+    /**
+     Reject data that has an older Lamport clock time.
+     */
+    @Test
+    public void sendOutdatedData() throws IOException, InterruptedException {
+        // Set up the aggregationServer (server) and contentServer (client)
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
+        ContentServer client1 = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
+        ContentServer client2 = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
+
+        // Process lots of event with client1
+        client1.lamportClock.processEvent(10);
+
+        // Make a request and get a response
+        server.startServer();
+        HttpRequest request = client1.createRequest();
+        HttpResponse<String> response = client1.sendRequest(request);
+        client1.processResponse(response);
+
+        // Ensure the response is 201
+        int responseStatus = response.statusCode();
+        assertEquals(201, responseStatus);
+
+        // Test that the lamport time has been updated
+        assertEquals(13, client1.lamportClock.getLamportTime());
+
+        // Make a request from the other client and get a response
+        request = client2.createRequest();
+        response = client2.sendRequest(request);
+        client2.processResponse(response);
+
+        // Ensure the response is 500
+        responseStatus = response.statusCode();
+        assertEquals(500, responseStatus);
+
+        // Test that the lamport time has been updated
+        assertEquals(14, client2.lamportClock.getLamportTime());
 
         // Shutdown the server
         server.shutdownServer();

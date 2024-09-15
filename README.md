@@ -185,4 +185,4 @@ If weather data with the same station ID but a smaller lamport time is received,
 ## Custom JSON Parser
 
 My custom JSON parser can only handle flat (non-nested) JSON, as that is the only kind of JSON seen in this assignment.
-It will not work for JSON that is more deeply nested, but that is acceptable and tested for.
+It will not work for JSON that is more deeply nested, but that is acceptable.

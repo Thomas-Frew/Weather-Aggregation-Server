@@ -139,11 +139,10 @@ public class FileHelpers {
                 if (!Objects.equals(station, stationId)) {
                     entries.add(entry.trim());
                 } else {
-                    /*
-                     DEBUG: Usually we'd check to see if the entry is up-to-date
-                     int otherTime = Integer.parseInt(entry.split(ITEM_DELIMITER, 4)[2]);
-                     if (lamportTime <= otherTime) throw new IllegalStateException("Record is out of date");
-                     */
+                    // Reject the new entry if it is out of date
+                    int otherTime = Integer.parseInt(entry.split(ITEM_DELIMITER, 4)[2]);
+                    System.out.println(otherTime + " " + lamportTime);
+                    if (lamportTime <= otherTime) throw new IllegalStateException("Record is out of date");
                     replaced = true;
                 }
             }

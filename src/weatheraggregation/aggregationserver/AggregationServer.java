@@ -208,7 +208,14 @@ public class AggregationServer {
             // Try to commit this data to memory
             try {
                 int realTime = (int) Instant.now().getEpochSecond();
-                boolean replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, this.lamportClock.getLamportTime(), weatherString);
+
+                boolean replaced = false;
+                try {
+                    replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, eventTime+1, weatherString);
+                } catch (IllegalStateException e) {
+                    exchange.sendResponseHeaders(500, -1);
+                    return true;
+                }
 
                 if (replaced) {
                     exchange.sendResponseHeaders(200, -1);

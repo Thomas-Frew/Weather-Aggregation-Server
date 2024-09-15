@@ -100,7 +100,7 @@ public class JsonParserTests {
     }
 
     /**
-     Fail to a JSON object that is missing its leading curly brace.
+     Fail to parse a JSON object that is missing its leading curly brace.
      */
     @Test(expected = CustomParseException.class)
     public void failParseNoLeadingCurlyBrace() throws CustomParseException {
@@ -112,7 +112,7 @@ public class JsonParserTests {
     }
 
     /**
-     Fail to a JSON object that is missing its trailing curly brace.
+     Fail to parse a JSON object that is missing its trailing curly brace.
      */
     @Test(expected = CustomParseException.class)
     public void failParseNoTrailingCurlyBrace() throws CustomParseException {
@@ -124,7 +124,7 @@ public class JsonParserTests {
     }
 
     /**
-     Fail to a JSON object that has a comma in the line. This is expected behaviour.
+     Fail to parse a JSON object that has a comma in the line. This is expected behaviour.
      */
     @Test(expected = CustomParseException.class)
     public void failParseCommaItem() throws CustomParseException {
