@@ -18,7 +18,7 @@ import weatheraggregation.jsonparser.CustomParseException;
 public class AggregationServer {
 
     public static final int DEFAULT_PORT = 4567;
-    public static final int MAX_COMMIT_ATTEMPTS = 10;
+    public static final int PURGE_SECONDS = 30;
 
     private final String contentFilename;
     private final LamportClock lamportClock;
@@ -47,6 +47,10 @@ public class AggregationServer {
         FileHelpers.tryCreateFile(contentFilename);
     }
 
+    /**
+     * Start the AggregationServer, listening out for HTTP requests from clients.
+     * Also, purge outdated weather data on a regular schedule.
+     */
     public void startServer() {
         try {
             // Create a localhost with the desired port
@@ -69,7 +73,10 @@ public class AggregationServer {
         }
     }
 
-    // Method to handle HTTP requests
+    /**
+     * Invoke the appropriate handler for an HTTP request.
+     * @param exchange An object containing the HTTP exchange.
+     */
     private void handleRequest(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
 
@@ -80,11 +87,13 @@ public class AggregationServer {
                 case "PUT" -> result = this.handlePUT(exchange);
                 default -> result = this.handleMiscellaneous(exchange);
             }
-            if (!result) System.err.println("Request handler for " + method + " failed");
+            if (!result) System.err.println("Failed to send response for request with method " + method);
         }
     }
 
-    // Method to expunge outdated weather data
+    /**
+     * Schedule to purge outdated weather data every PURGE_SECONDS seconds.
+     */
     private void startMaintenanceLoop() {
         this.scheduler = Executors.newScheduledThreadPool(1);
         this.scheduler.scheduleAtFixedRate(() -> {
@@ -95,9 +104,14 @@ public class AggregationServer {
             } catch (IOException e) {
                 System.err.println("IO exception when expunging data: " + e.getMessage());
             }
-        }, 0, 30, TimeUnit.SECONDS);
+        }, 0, PURGE_SECONDS, TimeUnit.SECONDS);
     }
 
+    /**
+     * Handle a message that is not a GET or a PUT by responding with a 400 status code.
+     * @param exchange An object containing the HTTP exchange.
+     * @return Whether the response successfully sent.
+     */
     private boolean handleMiscellaneous(HttpExchange exchange) {
         System.out.println("Handling Miscellaneous Message...");
 
@@ -111,6 +125,11 @@ public class AggregationServer {
         return false;
     }
 
+    /**
+     * Handle a GET request, responding with the requested weather data.
+     * @param exchange An object containing the HTTP exchange.
+     * @return Whether the response successfully sent.
+     */
     private boolean handleGET(HttpExchange exchange) {
         System.out.println("Handling GET...");
 
@@ -136,11 +155,10 @@ public class AggregationServer {
                 try (OutputStream outputStream = exchange.getResponseBody()) {
                     outputStream.write(jsonString.getBytes());
                 }
-                return true;
             } else {
                 exchange.sendResponseHeaders(404, -1);
-                return false;
             }
+            return true;
 
         } catch (CustomParseException e) {
             System.err.println("Parse exception: " + e.getMessage());
@@ -158,6 +176,11 @@ public class AggregationServer {
         return false;
     }
 
+    /**
+     * Handle a PUT request, committing the received weather data to memory.
+     * @param exchange An object containing the HTTP exchange.
+     * @return Whether the response successfully sent.
+     */
     private boolean handlePUT(HttpExchange exchange) {
         System.out.println("Handling PUT...");
         Map<String, String> headers = ConversionHelpers.requestHeadersToMap(exchange.getRequestHeaders());
@@ -183,23 +206,19 @@ public class AggregationServer {
             String stationId = weatherJson.get("id");
 
             // Try to commit this data to memory
-            int commitAttempts = 0;
-            while (commitAttempts < MAX_COMMIT_ATTEMPTS) {
-                try {
-                    int realTime = (int) Instant.now().getEpochSecond();
-                    boolean replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, this.lamportClock.getLamportTime(), weatherString);
+            try {
+                int realTime = (int) Instant.now().getEpochSecond();
+                boolean replaced = FileHelpers.writeAndSwapWeatherFile(this.contentFilename, stationId, realTime, this.lamportClock.getLamportTime(), weatherString);
 
-                    if (replaced) {
-                        exchange.sendResponseHeaders(200, -1);
-                    } else {
-                        exchange.sendResponseHeaders(201, -1);
-                    }
-                    return true;
-
-                } catch (IOException e) {
-                    System.err.println("Commit failed, retrying...");
-                    commitAttempts++;
+                if (replaced) {
+                    exchange.sendResponseHeaders(200, -1);
+                } else {
+                    exchange.sendResponseHeaders(201, -1);
                 }
+                return true;
+
+            } catch (IOException e) {
+                System.err.println("Commit failed, retrying...");
             }
             return false;
 
@@ -220,29 +239,27 @@ public class AggregationServer {
         return false;
     }
 
+    /**
+     * Shut down the HTTP server and scheduled maintenance loop.
+     */
     public void shutdownServer() {
         // Shut down the HTTP server
         if (server != null) {
-            System.out.println("Shutting down the server...");
+            System.out.println("Shutting down the HTTP server...");
             server.stop(0);
         }
 
-        // Shut down the scheduled executor service
+        // Shut down the scheduled maintenance service
         if (scheduler != null && !scheduler.isShutdown()) {
             System.out.println("Shutting down the scheduler...");
-            scheduler.shutdown();
-            try {
-                if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
-                    System.err.println("Scheduler did not terminate in time, forcing shutdown.");
-                    scheduler.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                System.err.println("Scheduler shutdown interrupted, forcing shutdown.");
-                scheduler.shutdownNow();
-            }
+            scheduler.shutdownNow();
         }
     }
 
+    /**
+     * The entry point for the server.
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("Usage: java AggregationServer <content_filename> <port>?");
