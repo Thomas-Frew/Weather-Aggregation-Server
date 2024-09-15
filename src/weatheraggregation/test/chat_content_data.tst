@@ -1,0 +1,2 @@
+hi: maddie
+bye: snow
