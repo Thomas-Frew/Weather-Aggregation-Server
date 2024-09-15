@@ -19,6 +19,7 @@ public class CustomJsonParser {
 
             // Trim the leading and trailing curly braces
             jsonString = jsonString.substring(1, jsonString.length() - 1).trim();
+            if (jsonString.isEmpty()) return jsonObject;
 
             // Pairs are delimited by comma
             String[] pairs = jsonString.split(FIELD_DELIMITER);
@@ -30,15 +31,16 @@ public class CustomJsonParser {
 
                 // If there are exactly two items, we have a pair!
                 if (keyValue.length == 2) {
-
                     // Remove all quotes, we don't need them
                     String key = keyValue[0].trim().replaceAll(QUOTE, "");
                     String value = keyValue[1].trim().replaceAll(QUOTE, "");
                     jsonObject.put(key, value);
                 } else {
-                    throw new CustomParseException();
+                    throw new CustomParseException("Field is not in the form \"key:value\"");
                 }
             }
+        } else {
+            throw new CustomParseException("String is not a JSON object");
         }
         return jsonObject;
     }

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
-public class DataExpungingTests {
+public class AggregationClientTests {
     /*
     Purge all outdated data on startup
     */
