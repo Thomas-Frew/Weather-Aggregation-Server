@@ -11,7 +11,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
+/**
+ * A client that can download data from an AggregationServer.
+ * Weather data is downloaded on a regular schedule and printed to stdout.
+ */
 public class GETClient extends AggregationClient {
+    // The station ID to get data from (optionally null)
     public final String stationId;
 
     public GETClient(String serverHostname) {
@@ -28,6 +33,10 @@ public class GETClient extends AggregationClient {
         this.lamportClock = new LamportClockImpl();
     }
 
+    /**
+     * Create an HTTP request to GET weather data.
+     * @return The created HTTP request.
+     */
     @Override
     public HttpRequest createRequest() {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
@@ -46,6 +55,10 @@ public class GETClient extends AggregationClient {
         return requestBuilder.build();
     }
 
+    /**
+     * Process an HTTP response to GET weather data.
+     * @param response The HTTP response to process.
+     */
     @Override
     public void processResponse(HttpResponse<String> response) {
         int eventTime = Integer.parseInt(response.headers().firstValue("Lamport-time").orElse("0"));
@@ -64,6 +77,10 @@ public class GETClient extends AggregationClient {
         }
     }
 
+    /**
+     * The entry point for the client.
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args)  {
         if (args.length == 0) {
             System.err.println("Usage: java GETClient <hostname> <station_id>?");
