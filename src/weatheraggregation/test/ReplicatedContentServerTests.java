@@ -66,7 +66,7 @@ public class ReplicatedContentServerTests {
         assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_1);
 
         // Shut down all servers and clients
-        replicatedClient.shutdownPrimary();
+        replicatedClient.shutdownClient();
         server1.shutdownServer();
         server2.shutdownServer();
     }
@@ -96,7 +96,7 @@ public class ReplicatedContentServerTests {
         assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_2);
 
         // Shut down all servers and clients
-        replicatedClient.shutdownPrimary();
+        replicatedClient.shutdownClient();
         server2.shutdownServer();
     }
 
@@ -126,7 +126,7 @@ public class ReplicatedContentServerTests {
         assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_3);
 
         // Shut down all servers and clients
-        replicatedClient.shutdownPrimary();
+        replicatedClient.shutdownClient();
         server3.shutdownServer();
     }
 
@@ -154,6 +154,6 @@ public class ReplicatedContentServerTests {
         assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_1);
 
         // Shut down the client
-        replicatedClient.shutdownPrimary();
+        replicatedClient.shutdownClient();
     }
 }
