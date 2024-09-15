@@ -8,6 +8,12 @@ public class CustomJsonParser {
     private static final String ITEM_DELIMITER = ":";
     private static final String QUOTE = "\"";
 
+    /**
+     * Convert a JSON string to a JSON object.
+     * @param jsonString The JSON string.
+     * @return The returned JSON object.
+     * @throws CustomParseException The JSON string may be invalid and raise an exception.
+     */
     public static Map<String, String> stringToJson(String jsonString) throws CustomParseException {
         Map<String, String> jsonObject = new HashMap<>();
 
@@ -45,10 +51,18 @@ public class CustomJsonParser {
         return jsonObject;
     }
 
+    /**
+     * Convert a JSON object to a JSON string.
+     * @param jsonObject The JSON object.
+     * @return The returned JSON string.
+     */
     public static String jsonToString(Map<String, String> jsonObject) {
         StringBuilder jsonString = new StringBuilder();
+
+        // Append the leading curly brace
         jsonString.append("{");
 
+        // Write each key-value pair to the JSON string
         for (Map.Entry<String, String> entry : jsonObject.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -62,6 +76,7 @@ public class CustomJsonParser {
             jsonString.append(FIELD_DELIMITER);
         }
 
+        // Append the tracking curly brace
         jsonString.append("}");
         return jsonString.toString();
     }
