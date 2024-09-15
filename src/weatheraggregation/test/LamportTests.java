@@ -7,6 +7,9 @@ import static org.junit.Assert.assertEquals;
 
 public class LamportTests {
 
+    /**
+     A lamport clock starts is initialised to 0.
+     */
     @Test
     public void lamportClockStartsAtZero() {
         LamportClock clock = new LamportClockImpl();
@@ -14,6 +17,9 @@ public class LamportTests {
         assertEquals(clock.getLamportTime(),0);
     }
 
+    /**
+     Increment a lamport clock with internal events.
+     */
     @Test
     public void lamportClockInternalIncrement() {
         LamportClock clock = new LamportClockImpl();
@@ -26,6 +32,9 @@ public class LamportTests {
         assertEquals(clock.getLamportTime(),3);
     }
 
+    /**
+     A lamport clock will take an incoming time if that time is larger.
+     */
     @Test
     public void lamportClockLoadNewTime() {
         LamportClock clock = new LamportClockImpl();
@@ -34,6 +43,9 @@ public class LamportTests {
         assertEquals(clock.getLamportTime(),101);
     }
 
+    /**
+     A lamport clock will reject an incoming time if that time is smaller.
+     */
     @Test
     public void lamportClockKeepOldTime() {
         LamportClock clock = new LamportClockImpl();

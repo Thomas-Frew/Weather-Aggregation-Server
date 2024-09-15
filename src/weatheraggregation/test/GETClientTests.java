@@ -16,8 +16,8 @@ import weatheraggregation.getclient.GETClient;
 import weatheraggregation.jsonparser.CustomJsonParser;
 
 public class GETClientTests {
-    /*
-    Try to fetch the only data entry from a server.
+    /**
+     Fetch the only entry from an AggregationServer.
      */
     @Test
     public void fetchSoleData() throws IOException, InterruptedException, CustomParseException {
@@ -26,7 +26,7 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
-        // Make the request and get the response
+        // Make a request and a the response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
@@ -37,9 +37,7 @@ public class GETClientTests {
         assertEquals(200, responseStatus);
 
         // Test headers for correctness
-        System.out.println(response.body());
         Map<String, String> jsonObject = CustomJsonParser.stringToJson(response.body());
-        System.out.println(jsonObject);
         assertEquals("CityTest1", jsonObject.get("name"));
         assertEquals("TEST00001", jsonObject.get("id"));
 
@@ -50,8 +48,8 @@ public class GETClientTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to fetch the most recent data entry from a server.
+    /**
+     Fetch the most recent entry from an AggregationServer.
      */
     @Test
     public void fetchMostRecentData() throws IOException, InterruptedException, CustomParseException {
@@ -60,7 +58,7 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
@@ -82,8 +80,8 @@ public class GETClientTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to fetch a specific data entry from a server.
+    /**
+     Fetch a specific (not most recent) entry from an AggregationServer.
      */
     @Test
     public void fetchSpecificData() throws IOException, InterruptedException, CustomParseException {
@@ -92,7 +90,7 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME, "TEST00002");
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
@@ -114,8 +112,8 @@ public class GETClientTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to fetch a non-existent data entry from a server.
+    /**
+     Fail to fetch a non-existent entry from an AggregationServer.
      */
     @Test
     public void fetchMissingData() throws IOException, InterruptedException, CustomParseException {
@@ -124,13 +122,13 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME, "MISSING");
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
         client.processResponse(response);
 
-        // Ensure the response is 200
+        // Ensure the response is 404
         int responseStatus = response.statusCode();
         assertEquals(404, responseStatus);
 
@@ -141,8 +139,8 @@ public class GETClientTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to fetch data from a server that has no contents.
+    /**
+     Fail to fetch a non-existent entry from an AggregationServer that has no data.
      */
     @Test
     public void fetchNoData() throws IOException, InterruptedException, CustomParseException {
@@ -151,13 +149,13 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
         client.processResponse(response);
 
-        // Ensure the response is 200
+        // Ensure the response is 404
         int responseStatus = response.statusCode();
         assertEquals(404, responseStatus);
 
@@ -168,8 +166,8 @@ public class GETClientTests {
         server.shutdownServer();
     }
 
-    /*
-    Integration Test: Test regular execution to see that data is fetched every 2 seconds.
+    /**
+     Integration Test: Fetch data every 2 seconds.
      */
     @Test
     public void regularRequestsSent() throws IOException, InterruptedException {
@@ -178,7 +176,7 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
-        // Make the request and get the response
+        // Start the server and client
         server.startServer();
         client.startClient();
 
@@ -188,7 +186,7 @@ public class GETClientTests {
         // Test that the lamport time has been updated
         assertEquals(4, client.lamportClock.getLamportTime());
 
-        // Shutdown the server
+        // Shutdown the server and client
         client.shutdownClient();
         server.shutdownServer();
     }

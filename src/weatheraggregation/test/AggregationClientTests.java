@@ -15,19 +15,19 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 
 public class AggregationClientTests {
-    /*
-    Purge all outdated data on startup
-    */
+    /**
+     Purge all outdated data on startup.
+     */
     @Test
     public void expungeDataOnStartup() throws IOException, InterruptedException, CustomParseException {
-        // Set up the file, server and client
+        // Set up the file and server
         TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, false);
 
-        // Start the aggregation server
+        // Start the server
         server.startServer();
 
-        // Wait a second for the purging to complete
+        // Wait a second for the expunging to complete
         TimeUnit.SECONDS.sleep(1);
 
         // Ensure that the outdated data is expunged
@@ -38,9 +38,9 @@ public class AggregationClientTests {
         server.shutdownServer();
     }
 
-    /*
-    Purge all outdated data on startup
-    */
+    /**
+     Purge outdated data every 30 seconds. Remove data that is 30 or more seconds old.
+     */
     @Test
     public void expungeDataRegularly() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
@@ -48,11 +48,10 @@ public class AggregationClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, false);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Make the request and get the response
+        // Make a request
         server.startServer();
         HttpRequest request = client.createRequest();
-        HttpResponse<String> response = client.sendRequest(request);
-        client.processResponse(response);
+        client.sendRequest(request);
 
         // Ensure that the outdated data was received
         List<String[]> entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);

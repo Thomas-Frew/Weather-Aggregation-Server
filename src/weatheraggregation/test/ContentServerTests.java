@@ -16,10 +16,9 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 
 public class ContentServerTests {
-
-    /*
-    Try to send data to the server for the first time
-    */
+    /**
+     Send data to an AggregationServer for the first time, and confirm that it is committed.
+     */
     @Test
     public void sendFirstData() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
@@ -27,7 +26,39 @@ public class ContentServerTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Make the request and get the response
+        // Make a request and get a response
+        server.startServer();
+        HttpRequest request = client.createRequest();
+        HttpResponse<String> response = client.sendRequest(request);
+        client.processResponse(response);
+
+        // Ensure the response is 201
+        int responseStatus = response.statusCode();
+        assertEquals(201, responseStatus);
+
+        // Check that the file contents match what we expect
+        List<String[]> entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);
+        assertEquals(entries.getFirst()[0], "IDS00001");
+        assertEquals(entries.getFirst()[2], "1");
+
+        // Test that the lamport time has been updated
+        assertEquals(2, client.lamportClock.getLamportTime());
+
+        // Shutdown the server
+        server.shutdownServer();
+    }
+
+    /**
+     Send data to an AggregationServer many times, and confirm that it is committed.
+     */
+    @Test
+    public void sendRepeatedData() throws IOException, InterruptedException, CustomParseException {
+        // Set up the aggregationServer (server) and contentServer (client)
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
+        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
+
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
@@ -45,39 +76,7 @@ public class ContentServerTests {
         // Test that the lamport time has been updated
         assertEquals(2, client.lamportClock.getLamportTime());
 
-        // Shutdown the server
-        server.shutdownServer();
-    }
-
-    /*
-    Try to send data to the server for the first time
-    */
-    @Test
-    public void sendRepeatedData() throws IOException, InterruptedException, CustomParseException {
-        // Set up the aggregationServer (server) and contentServer (client)
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
-        AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
-        ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
-
-        // Make the request and get the response
-        server.startServer();
-        HttpRequest request = client.createRequest();
-        HttpResponse<String> response = client.sendRequest(request);
-        client.processResponse(response);
-
-        // Ensure the response is 200
-        int responseStatus = response.statusCode();
-        assertEquals(201, responseStatus);
-
-        // Check if the file contents match what we expect
-        List<String[]> entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);
-        assertEquals(entries.getFirst()[0], "IDS00001");
-        assertEquals(entries.getFirst()[2], "1");
-
-        // Test that the lamport time has been updated
-        assertEquals(2, client.lamportClock.getLamportTime());
-
-        // Make the request again and get another response
+        // Make a request again and get another response
         request = client.createRequest();
         response = client.sendRequest(request);
         client.processResponse(response);
@@ -98,9 +97,9 @@ public class ContentServerTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to send data to the server for the first time
-    */
+    /**
+     Send data from different weather stations and confirm that it is committed.
+     */
     @Test
     public void sendDifferentData() throws IOException, InterruptedException, CustomParseException {
         // Set up the aggregationServer (server) and contentServer (client)
@@ -108,13 +107,13 @@ public class ContentServerTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
         client.processResponse(response);
 
-        // Ensure the response is 200
+        // Ensure the response is 201
         int responseStatus = response.statusCode();
         assertEquals(201, responseStatus);
 
@@ -150,9 +149,9 @@ public class ContentServerTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to send with no valid fields
-    */
+    /**
+     Fail to send data that lacks any weather fields.
+     */
     @Test
     public void sendDataWithoutValidFields() throws IOException, InterruptedException {
         // Set up the aggregationServer (server) and contentServer (client)
@@ -160,13 +159,13 @@ public class ContentServerTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/chat_content_data.tst");
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
         client.processResponse(response);
 
-        // Ensure the response is 200
+        // Ensure the response is 500
         int responseStatus = response.statusCode();
         assertEquals(500, responseStatus);
 
@@ -177,9 +176,9 @@ public class ContentServerTests {
         server.shutdownServer();
     }
 
-    /*
-    Try to send data with some valid fields, but no ID
-    */
+    /**
+     Fail to send data that has some weather fields, but lacks an ID.
+     */
     @Test
     public void sendDataWithoutID() throws IOException, InterruptedException {
         // Set up the aggregationServer (server) and contentServer (client)
@@ -187,13 +186,13 @@ public class ContentServerTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/no_id_content_data.tst");
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
         client.processResponse(response);
 
-        // Ensure the response is 200
+        // Ensure the response is 500
         int responseStatus = response.statusCode();
         assertEquals(500, responseStatus);
 
@@ -204,9 +203,9 @@ public class ContentServerTests {
         server.shutdownServer();
     }
 
-    /*
-Try to send data with some valid fields, but no ID
-*/
+    /**
+     Fail to send data that lacks any data.
+     */
     @Test
     public void sendEmptyJSON() throws IOException, InterruptedException {
         // Set up the aggregationServer (server) and contentServer (client)
@@ -214,13 +213,13 @@ Try to send data with some valid fields, but no ID
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/empty_content_data.tst");
 
-        // Make the request and get the response
+        // Make a request and get a response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
         client.processResponse(response);
 
-        // Ensure the response is 200
+        // Ensure the response is 204
         int responseStatus = response.statusCode();
         assertEquals(204, responseStatus);
 
@@ -231,13 +230,13 @@ Try to send data with some valid fields, but no ID
         server.shutdownServer();
     }
 
-    /*
-    Integration Test: Test regular execution to see that data is pushed every 2 seconds.
+    /**
+     Integration Test: Push data every 2 seconds.
      */
     @Test
     public void regularRequestsSent() throws IOException, CustomParseException, InterruptedException {
-        // Set up the file, server and client
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/content_data_mixed.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        // Set up the aggregationServer (server) and contentServer (client)
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         ContentServer client = new ContentServer(TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_mixed.tst");
 

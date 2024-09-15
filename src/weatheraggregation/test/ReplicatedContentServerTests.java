@@ -13,143 +13,147 @@ import static org.junit.Assert.assertEquals;
 
 public class ReplicatedContentServerTests {
 
+    // Example port numbers for the three AggregationServers we might want to connect to
     private static final int PORT_1 = 2764;
     private static final int PORT_2 = 2765;
     private static final int PORT_3 = 2766;
 
-    private static final String REPLICA_HOSTNAME_1 = TestHelpers.IP + ":" + PORT_1;
-    private static final String REPLICA_HOSTNAME_2 = TestHelpers.IP + ":" + PORT_2;
-    private static final String REPLICA_HOSTNAME_3 = TestHelpers.IP + ":" + PORT_3;
+    // Construct hostnames for our three AggregationServers
+    private static final String HOSTNAME_1 = TestHelpers.IP + ":" + PORT_1;
+    private static final String HOSTNAME_2 = TestHelpers.IP + ":" + PORT_2;
+    private static final String HOSTNAME_3 = TestHelpers.IP + ":" + PORT_3;
 
+    // A constant (approximate) time required to fail over, this depends on the socket
     private static final int FAILOVER_TIME = AggregationClient.MAX_RETRIES*(AggregationClient.SLEEP_SECONDS*2) + 2;
 
-    /*
-    Create a replicated content server with one client and confirm that it is the primary.
+    /**
+     Create a ReplicatedContentServer with one ContentServer and confirm that it is the primary.
     */
     @Test
     public void initialConfigurationValid() {
-        // Set up the replicatedContentServer with two hostnames
-        List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
+        // Set up the ReplicatedContentServer with two ContentServers
+        List<String> hostnames = List.of(HOSTNAME_1, HOSTNAME_2);
         ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Check that the first hostname is the primary
-        assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_1);
+        // Check that the first ContentServer is the primary
+        assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_1);
     }
 
-    /*
-    Create a replicated content server with two valid clients and confirm that failover is not necessary.
-    */
+    /**
+     Create a ReplicatedContentServer with two ContentServers.
+     Both of the ContentServers have AggregationServers to connect to, so no failover should occur.
+     */
     @Test
     public void noFailover() throws IOException, InterruptedException {
-        // Set up the aggregationServers
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        // Set up the two AggregationServers and its file
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server1 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_1, true);
         AggregationServer server2 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_2, true);
 
-        // Set up the replicatedContentServer with two hostnames
-        List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
+        // Set up the ReplicatedContentServer with two ContentServers
+        List<String> hostnames = List.of(HOSTNAME_1, HOSTNAME_2);
         ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Start up the aggregationServers
+        // Start the AggregationServers
         server1.startServer();
         server2.startServer();
 
-        // Start up the replicatedContentServer and wait 1.5 cycles
+        // Start the ReplicatedContentServer and wait for 1.5 cycles
         replicatedClient.startPrimary();
         TimeUnit.SECONDS.sleep(AggregationClient.SLEEP_SECONDS + 1);
 
-        // Check that the first hostname is still the primary
-        assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_1);
+        // Check that the first ContentServer is still the primary
+        assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_1);
 
-        // Shut down the aggregationServers
+        // Shut down all servers and clients
         replicatedClient.shutdownPrimary();
         server1.shutdownServer();
         server2.shutdownServer();
     }
 
-    /*
-    Create a replicated content server with two valid clients and confirm that failover is not necessary.
-    */
+    /**
+     Create a ReplicatedContentServer with two ContentServers.
+     The first ContentServer is missing its AggregationServer, causing failover.
+     */
     @Test
     public void failover() throws IOException, InterruptedException {
-        // Set up the aggregationServer
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        // Set up the AggregationServer and its file
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server2 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_2, true);
 
-        // Set up the replicatedContentServer with two hostnames
-        List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
+        // Set up the ReplicatedContentServer with two ContentServers
+        List<String> hostnames = List.of(HOSTNAME_1, HOSTNAME_2);
         ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Start up the aggregationServer
+        // Start up the AggregationServer
         server2.startServer();
 
-        // Start up the replicatedContentServer and wait 1.5 cycles
+        // Start up the ReplicatedContentServer and wait for failover
         replicatedClient.startPrimary();
         TimeUnit.SECONDS.sleep(FAILOVER_TIME);
 
-        // Check that the second hostname is now the primary
-        assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_2);
+        // Check that the second ContentServer is now the primary
+        assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_2);
 
-        // Shut down the aggregationServer
+        // Shut down all servers and clients
         replicatedClient.shutdownPrimary();
         server2.shutdownServer();
     }
 
-    /*
-    Create a replicated content server with two valid clients and confirm that failover is not necessary.
-    */
+    /**
+     Create a ReplicatedContentServer with three ContentServers.
+     The first two ContentServers are missing its AggregationServers, causing two failovers.
+     */
     @Test
     public void doubleFailover() throws IOException, InterruptedException {
-        // Set up the aggregationServer
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        // Set up the AggregationServer and its file
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
         AggregationServer server3 = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, PORT_3, true);
 
-        // Set up the replicatedContentServer with two hostnames
-        List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2, REPLICA_HOSTNAME_3);
+        // Set up the ReplicatedContentServer with three ContentServers
+        List<String> hostnames = List.of(HOSTNAME_1, HOSTNAME_2, HOSTNAME_3);
         ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Start up the aggregationServer
+        // Start up the AggregationServer
         server3.startServer();
 
-        // Start up the replicatedContentServer and wait to fail over twice
+        // Start up the ReplicatedContentServer and wait to failover twice
         replicatedClient.startPrimary();
         TimeUnit.SECONDS.sleep(FAILOVER_TIME);
         TimeUnit.SECONDS.sleep(FAILOVER_TIME);
 
-        // Check that the third hostname is now the primary
-        assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_3);
+        // Check that the third ContentServer is now the primary
+        assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_3);
 
-        // Shut down the aggregationServer
+        // Shut down all servers and clients
         replicatedClient.shutdownPrimary();
         server3.shutdownServer();
     }
 
-    /*
-    Create a replicated content server with two invalid clients and confirm that they cycle correctly.
-    */
+    /**
+     Create a ReplicatedContentServer with two ContentServers.
+     All ContentServers are missing its AggregationServers, causing continued failover between the two.
+     */
     @Test
-    public void failBack() throws IOException, InterruptedException {
-        // Set up the aggregationServer
-        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
-
-        // Set up the replicatedContentServer with two hostnames
-        List<String> hostnames = List.of(REPLICA_HOSTNAME_1, REPLICA_HOSTNAME_2);
+    public void failBack() throws InterruptedException {
+        // Set up the ReplicatedContentServer with two ContentServers
+        List<String> hostnames = List.of(HOSTNAME_1, HOSTNAME_2);
         ReplicatedContentServer replicatedClient = new ReplicatedContentServer(hostnames, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
 
-        // Start up the replicatedContentServer and wait to fail over
+        // Start up the ReplicatedContentServer and wait to failover
         replicatedClient.startPrimary();
         TimeUnit.SECONDS.sleep(FAILOVER_TIME);
 
-        // Check that the second hostname is now the primary
-        assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_2);
+        // Check that the second ContentServer is now the primary
+        assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_2);
 
-        // Wait to fail over
+        // Wait to failover again
         TimeUnit.SECONDS.sleep(FAILOVER_TIME);
 
-        // Check that the first hostname is now the primary
-        assertEquals(replicatedClient.getPrimaryServer().serverHostname, REPLICA_HOSTNAME_1);
+        // Check that the first ContentServer is now the primary
+        assertEquals(replicatedClient.getPrimaryServer().serverHostname, HOSTNAME_1);
 
-        // Shut down the aggregationServer
+        // Shut down the client
         replicatedClient.shutdownPrimary();
     }
 }
