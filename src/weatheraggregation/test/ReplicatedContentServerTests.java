@@ -2,7 +2,7 @@ package weatheraggregation.test;
 
 import org.junit.Test;
 import weatheraggregation.aggregationserver.AggregationServer;
-import weatheraggregation.contentserver.ReplicatedContentServer;
+import weatheraggregation.replicatedcontentserver.ReplicatedContentServer;
 import weatheraggregation.core.AggregationClient;
 
 import java.io.IOException;

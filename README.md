@@ -1,5 +1,7 @@
 # Tom's Weather Aggregation System
 
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+
 Welcome to my Weather Aggregation System and submission for Assignment 2 of *COMP SCI 3012 - Distributed Systems*.
 I had a great time implementing this assignment, and I hope you can appreciate the effort put into its design and test suite.
 
@@ -21,16 +23,22 @@ Java HotSpot(TM) 64-Bit Server VM (build 22.0.2+9-70, mixed mode, sharing)
 `src/weatheraggregation/` contains packages with all source code and testing files for this project:
 
 - `aggregationserver`: The code and entry point for AggregationServer.
-- `contentserver`: The code and entry points ContentServer and ReplicatedContentServer. 
+- `contentserver`: The code and entry point ContentServer.
 - `core`: Core interfaces and classes reused throughout the system.
 - `getclient`: The code and entry point for GETClient.
 - `jsonparser`: The code for my custom JSON parser, CustomJsonParser.
+- `replicatedcontentserver`: The code and entry point for and ReplicatedContentServer.
 - `test`: JUnit test files for all parts of the application.
 - `test/testdata`: Data used by the tests.
 
 ## Services
 
 This system contains four services with executable entry points.
+
+### Foreword
+
+If you don't like using commands, you can always open this project in IntelliJ and run the entry points from there.
+They are much easier and less annoying to deal with.
 
 ### AggregationServer
 
@@ -46,6 +54,9 @@ java .\src\weatheraggregation\aggregationserver\AggregationServer.java <content_
 Upon running this command, the AggregationServer will start running on your localhost with the designated port. 
 It will listen out for HTTP requests and service GET/PUTS.
 Every 30 seconds, it will purge any weather data that is 30 or more seconds old.
+
+> Remember to run this service before GETClient and any ContentServers!
+> Copy the IP and port number of the server (printed when it starts), since these form a command-line argument for the GETClient and all ContentServers. 
 
 ### GETClient
 
@@ -83,7 +94,7 @@ If the server fails to send data to its AggregationServer 3 consecutive times, i
 
 Manages a number of ContentServers and fails over when the primary fails to send data to its AggregationServer.
 ```
-java .\src\weatheraggregation\contentserver\ContentServer.java <content_filename> <server_hostname1> <server_hostname2> ... <server_hostnameN>  
+java .\src\weatheraggregation\replicatedcontentserver\ReplicatedContentServer.java <content_filename> <server_hostname1> <server_hostname2> ...
 ```
 
 - `<content_filename>`: The filename that weather data will be read and sent from.
