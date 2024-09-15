@@ -16,7 +16,6 @@ public abstract class AggregationClient {
     public HttpClient httpClient;
     public LamportClock lamportClock;
     public ScheduledExecutorService scheduler;
-    public Runnable shutdownCallback;
 
     public final void startClient() {
         // Send request every 2 seconds
@@ -51,10 +50,6 @@ public abstract class AggregationClient {
     public abstract void processResponse(HttpResponse<String> response);
 
     public void shutdownClient() {
-        if (this.shutdownCallback != null) {
-            this.shutdownCallback.run();
-        }
-
         if (this.scheduler != null && !this.scheduler.isShutdown()) {
             this.scheduler.shutdown();
             try {

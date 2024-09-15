@@ -17,7 +17,7 @@ public class ReplicatedContentServer {
         this.primaryIndex = 0;
 
         for (String hostname : serverHostnames) {
-            contentServers.add(new ContentServer(hostname, contentFilename, this::promoteNextServer));
+            contentServers.add(new CallbackContentServer(hostname, contentFilename, this::promoteNextServer));
         }
     }
 
