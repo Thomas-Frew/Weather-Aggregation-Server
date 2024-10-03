@@ -14,7 +14,6 @@ import java.util.concurrent.ScheduledExecutorService;
 public class ReplicatedContentServer {
     private final List<ContentServer> contentServers;
     private int primaryIndex;
-    public ScheduledExecutorService scheduler;
     private boolean running = true;
 
     public ReplicatedContentServer(List<String> serverHostnames, String contentFilename) {

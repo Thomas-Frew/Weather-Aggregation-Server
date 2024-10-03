@@ -10,6 +10,7 @@ import weatheraggregation.jsonparser.CustomParseException;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -133,5 +134,49 @@ public class JsonParserTests {
 
         // Fail to convert to JSON
         CustomJsonParser.stringToJson(jsonString);
+    }
+
+    /**
+     Parse a simple JSON object (1 key-value pair) into a string.
+     */
+    @Test
+    public void parseSimpleString() {
+        // Define test JSON object
+        Map<String, String> jsonObject = new HashMap<>();
+        jsonObject.put("key","value1");
+
+        // Convert to and check it is correct
+        String jsonString = CustomJsonParser.jsonToString(jsonObject);
+        assertEquals("{\"key\":\"value1\",}", jsonString);
+    }
+
+    /**
+     Parse a complex JSON object (3 key-value pairs, whitespace, colons) into a string.
+     */
+    @Test
+    public void parseComplexString() {
+        // Define test JSON object
+        Map<String, String> jsonObject = new HashMap<>();
+        jsonObject.put("keyA"," helloA ");
+        jsonObject.put("keyB","hey:B");
+        jsonObject.put("key:C","hi C");
+
+
+        // Convert to and check it is correct
+        String jsonString = CustomJsonParser.jsonToString(jsonObject);
+        assertEquals("{\"keyA\":\" helloA \",\"keyB\":\"hey:B\",\"key:C\":\"hi C\",}", jsonString);
+    }
+
+    /**
+     Parse an empty JSON object into a string.
+     */
+    @Test
+    public void parseEmptyString() {
+        // Define test JSON object
+        Map<String, String> jsonObject = new HashMap<>();
+
+        // Convert to and check it is correct
+        String jsonString = CustomJsonParser.jsonToString(jsonObject);
+        assertEquals("{}", jsonString);
     }
 }

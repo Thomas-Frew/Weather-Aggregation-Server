@@ -1,0 +1,402 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.7.7">
+  <diagram name="Page-1" id="YS7yst0GcitPKb5qi4lf">
+    <mxGraphModel dx="4016" dy="1591" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-128" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-1" target="cZj2MIxqSwXQaEjKQkLF-34" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="900" />
+              <mxPoint x="420" y="900" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-132" value="Copy&lt;br&gt;(tmp -&amp;gt; wd)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-128" vertex="1" connectable="0">
+          <mxGeometry x="-0.15" y="1" relative="1" as="geometry">
+            <mxPoint x="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-1" target="cZj2MIxqSwXQaEjKQkLF-34" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-133" value="Write&lt;br&gt;(tmp)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-130" vertex="1" connectable="0">
+          <mxGeometry x="-0.0705" y="-1" relative="1" as="geometry">
+            <mxPoint x="1" y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-1" value="AggregationServer" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="320" y="480" width="400" height="450" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-25" value="contentFilename" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-53" value="serverPort" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="10" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-45" value="&lt;div style=&quot;text-align: start;&quot;&gt;handleGET(exc)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="210" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-51" value="&lt;div style=&quot;text-align: start;&quot;&gt;shutdownSerer()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="210" y="250" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-46" value="&lt;div style=&quot;text-align: start;&quot;&gt;handlePUT(exc)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="210" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-54" value="&lt;div style=&quot;text-align: start;&quot;&gt;main(args)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="210" y="300" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-110" value="handleRequest(exc)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="10" y="400" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-113" value="&lt;div style=&quot;text-align: start;&quot;&gt;handleMisc(exc)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="210" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-135" value="startServer()" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="10" y="350" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-184" value="lamportClock" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-1" vertex="1">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-1" value="requestLock" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-1">
+          <mxGeometry x="10" y="250" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-2" value="server" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-1">
+          <mxGeometry x="10" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-3" value="testing" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-1">
+          <mxGeometry x="10" y="300" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-4" value="startMaintainence&lt;br&gt;Loop()" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-1">
+          <mxGeometry x="210" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-145" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;endSize=12;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-152" target="cZj2MIxqSwXQaEjKQkLF-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="579.9999999999998" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="10" y="605" />
+              <mxPoint x="10" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-13" value="AggregationClient" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="40" y="200" width="400" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-16" value="&lt;div style=&quot;&quot;&gt;ABSTRACT&lt;br&gt;createRequest()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-13" vertex="1">
+          <mxGeometry x="10" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-17" value="&lt;div style=&quot;text-align: start;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;sendRequest(req)&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-13" vertex="1">
+          <mxGeometry x="210" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-48" value="&lt;div style=&quot;text-align: start;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;startClient()&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-13" vertex="1">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-49" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;sendRequestWith&lt;br&gt;Retry()&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" parent="cZj2MIxqSwXQaEjKQkLF-13" vertex="1">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-141" value="&lt;div style=&quot;&quot;&gt;ABSTRACT&lt;br&gt;processResponse(res)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-13" vertex="1">
+          <mxGeometry x="210" y="99.66" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-59" value="&lt;div style=&quot;&quot;&gt;shutdownClient()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-13">
+          <mxGeometry x="210" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-18" value="LamportClockImpl" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="520" y="200" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-20" value="&lt;div style=&quot;text-align: start;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;processEvent()&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-18" vertex="1">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-21" value="&lt;div style=&quot;text-align: start;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;processEvent(time)&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-18" vertex="1">
+          <mxGeometry x="10" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-22" value="&lt;div style=&quot;text-align: start;&quot;&gt;getLamportTime()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-18" vertex="1">
+          <mxGeometry x="10" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-36" value="lamportTime" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-18">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-131" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-34" target="cZj2MIxqSwXQaEjKQkLF-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-134" value="Read&lt;br&gt;(wd)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-131" vertex="1" connectable="0">
+          <mxGeometry x="0.1529" y="3" relative="1" as="geometry">
+            <mxPoint x="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="cZj2MIxqSwXQaEjKQkLF-34" target="cZj2MIxqSwXQaEjKQkLF-148">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-89" value="&lt;font face=&quot;JetBrains Mono&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot;&gt;read&lt;br&gt;(cd)&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p9WIXQbenrrdaCnkltIV-88">
+          <mxGeometry x="0.0244" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-34" value="File System" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="320" y="990" width="400" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-11" value="content_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fontSize=12;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-34">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-9" value="content_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fontSize=12;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-34">
+          <mxGeometry x="10" y="90" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-10" value="content_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fontSize=12;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-34">
+          <mxGeometry x="10" y="80" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-8" value="content_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fontSize=12;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-34">
+          <mxGeometry x="10" y="70" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-7" value="content_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fontSize=12;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-34">
+          <mxGeometry x="10" y="60" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-126" value="content_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-34" vertex="1">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-44" value="weather_data.txt" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-34" vertex="1">
+          <mxGeometry x="210" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-6" value="weather_data.tmp" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=14;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;dashed=1;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-34">
+          <mxGeometry x="210" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-156" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endSize=12;endArrow=block;endFill=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-148" target="cZj2MIxqSwXQaEjKQkLF-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="805" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="40" y="820" />
+              <mxPoint x="-10" y="820" />
+              <mxPoint x="-10" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-157" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-148" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-182" value="PUT" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-157" vertex="1" connectable="0">
+          <mxGeometry x="-0.0352" y="-1" relative="1" as="geometry">
+            <mxPoint y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-158" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-148" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-183" value="200 201&lt;br&gt;204 400&lt;br&gt;500" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-158" vertex="1" connectable="0">
+          <mxGeometry x="-0.0092" y="2" relative="1" as="geometry">
+            <mxPoint x="1" y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-148" value="ContentServer" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="40" y="760" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-150" value="contentFilename" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-148" vertex="1">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-16" value="&lt;div style=&quot;&quot;&gt;OVERRIDE&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;CreateRequest()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-148">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-17" value="&lt;div style=&quot;&quot;&gt;OVERRIDE&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;ProcessResponse(res)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-148">
+          <mxGeometry x="10" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-18" value="&lt;div style=&quot;&quot;&gt;main(args)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-148">
+          <mxGeometry x="10" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-160" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=classic;startFill=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-152" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="600" as="sourcePoint" />
+            <mxPoint x="320" y="668" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="281" y="668" />
+              <mxPoint x="320" y="668" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-181" value="200&lt;br&gt;400 500" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-160" vertex="1" connectable="0">
+          <mxGeometry x="-0.0171" y="-1" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-152" value="GETClient" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="40" y="480" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-194" value="stationId" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-152" vertex="1">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-13" value="&lt;div style=&quot;&quot;&gt;OVERRIDE&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;CreateRequest()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-152">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-14" value="&lt;div style=&quot;&quot;&gt;OVERRIDE&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;ProcessResponse(res)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-152">
+          <mxGeometry x="10" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-15" value="&lt;div style=&quot;&quot;&gt;main(args)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="cZj2MIxqSwXQaEjKQkLF-152">
+          <mxGeometry x="10" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-164" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="cZj2MIxqSwXQaEjKQkLF-152" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="543" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="300" y="543" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cZj2MIxqSwXQaEjKQkLF-178" value="GET" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" parent="cZj2MIxqSwXQaEjKQkLF-164" vertex="1" connectable="0">
+          <mxGeometry x="-0.1192" y="-2" relative="1" as="geometry">
+            <mxPoint x="4" y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endSize=12;endArrow=diamond;endFill=1;" edge="1" parent="1" source="p9WIXQbenrrdaCnkltIV-25" target="p9WIXQbenrrdaCnkltIV-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-25" value="CustomJSONParser" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="750" y="200" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-27" value="&lt;div style=&quot;&quot;&gt;stringToJson()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-25">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-28" value="&lt;div style=&quot;&quot;&gt;jsonToString()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-25">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-30" value="CustomParseException" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="750" y="380" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-31" value="&lt;div style=&quot;&quot;&gt;CustomParse&lt;br&gt;Exception(exc)&lt;br&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-30">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-37" value="ConversionHelpers" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="750" y="510" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-38" value="&lt;div style=&quot;text-align: start;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;requestHeaders&lt;br&gt;ToMap(headers)&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-37">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-39" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;inputStreamToString&lt;br&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;(inputStream)&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-37">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-42" value="FileHelpers" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="750" y="690" width="390" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-57" value="&lt;div style=&quot;&quot;&gt;writeAndSwapWeatherFile(fname,stationId,&lt;br&gt;realTime,lamportTime,jsonString)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="10" y="200" width="370" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-58" value="&lt;div style=&quot;&quot;&gt;expungeAndSwapWeatherFile(fname,realTime)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="10" y="250" width="370" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-54" value="&lt;div style=&quot;&quot;&gt;readWeatherFileAll(fname)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="10" y="150" width="370" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-47" value="&lt;div style=&quot;&quot;&gt;readWeatherFileFirst&lt;br&gt;(fname)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-44" value="&lt;div style=&quot;&quot;&gt;readContent&lt;br&gt;File(fname)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="200" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-43" value="&lt;div style=&quot;text-align: start;&quot;&gt;tryCreateFile(fname)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="200" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-45" value="&lt;div style=&quot;&quot;&gt;readWeatherFile&lt;br&gt;(fname,stationId)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-42">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-66" value="ReplicatedContentServer" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="880" width="400" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-67" value="&lt;div style=&quot;&quot;&gt;getPrimaryServer()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="10" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-68" value="&lt;div style=&quot;&quot;&gt;promoteNextServer()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="210" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-69" value="&lt;div style=&quot;&quot;&gt;startPrimary()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="210" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-70" value="&lt;div style=&quot;&quot;&gt;shutdownPrimary()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="210" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-71" value="&lt;div style=&quot;&quot;&gt;shutdownClient()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="210" y="200" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-78" value="running" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="10" y="150" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-77" value="primaryindex" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="10" y="100" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-76" value="contentServers" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-85" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endSize=12;endArrow=block;endFill=0;" edge="1" parent="1" source="p9WIXQbenrrdaCnkltIV-82" target="cZj2MIxqSwXQaEjKQkLF-148">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=diamond;endFill=1;endSize=12;" edge="1" parent="1" source="p9WIXQbenrrdaCnkltIV-82" target="p9WIXQbenrrdaCnkltIV-66">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-82" value="CallbackContentServer" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1040" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-83" value="&lt;div style=&quot;&quot;&gt;OVERRIDE&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;shutdownClient()&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-82">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-104" value="ReplicatedContent&lt;br&gt;ServerTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="750" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-106" value="&lt;div style=&quot;&quot;&gt;JUint Tests&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-104">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-109" value="LamportTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="750" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-110" value="&lt;div style=&quot;&quot;&gt;JUint Tests&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-109">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-111" value="GETClientTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="650" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-112" value="&lt;div style=&quot;&quot;&gt;JUint Tests&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-111">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-113" value="JsonParserTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="650" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-114" value="&lt;div style=&quot;&quot;&gt;JUint Tests&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-113">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-115" value="AggregationServerTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="550" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-116" value="&lt;div style=&quot;&quot;&gt;JUint Tests&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-115">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-117" value="ContentServerTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="550" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-118" value="&lt;div style=&quot;&quot;&gt;JUint Tests&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-117">
+          <mxGeometry x="10" y="50" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-123" value="Interface" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="300" y="100" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-130" value="Class" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="170" y="100" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-131" value="Helper Class" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="430" y="100" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-132" value="Test Class" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="560" y="100" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-133" value="File System" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="690" y="100" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-137" value="&lt;font style=&quot;font-size: 16px;&quot; face=&quot;JetBrains Mono&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot;&gt;Thomas Frew&#39;s Weather Aggregation System&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="60" width="420" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-141" value="AggregationServerTests" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="420" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p9WIXQbenrrdaCnkltIV-142" value="&lt;div style=&quot;&quot;&gt;swapFiles(oldFname,newFname)&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fontFamily=JetBrains Mono;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DJetBrains%2BMono;align=center;" vertex="1" parent="p9WIXQbenrrdaCnkltIV-141">
+          <mxGeometry x="10" y="50" width="380" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

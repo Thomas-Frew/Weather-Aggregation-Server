@@ -107,7 +107,7 @@ The selection of primaries cycles back to the front of the list after the Nth on
 ## Tests and Test Coverage
 
 A lot of effort has been put into producing tests with significant coverage. 
-Each file in `/src/weatheraggregation/test` contains a test suite associated with one class in the system (except `MixedTests`).
+Each file in `/src/weatheraggregation/test` contains a test suite associated with one class in the system.
 
 Run the tests by running the TestRunner class in IntelliJ, or by compiling with Maven using:
 ```
@@ -159,6 +159,9 @@ Tests for my CustomJsonParser.
 - `failParseNoLeadingCurlyBrace`: Fail to parse a JSON object missing its leading curly brace.
 - `failParseNoTrailingCurlyBrace`: Fail to parse a JSON object missing its trailing curly brace.
 - `failParseCommaItem`: Fail to parse a JSON object with an unexpected comma inside a field value.
+- `parseSimpleString`: Parse a simple JSON string (1 key-value pair) into a string.
+- `parseComplexString`: Parse a complex JSON string (3 key-value pairs, whitespace, colons) into a string.
+- `parseEmptyString`: Parse an empty JSON object into a string.
 
 ### LamportTests
 
