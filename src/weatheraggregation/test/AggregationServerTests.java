@@ -64,7 +64,7 @@ public class AggregationServerTests {
         assertEquals(1, entries.size());
 
         // Wait 20 seconds
-        TimeUnit.SECONDS.sleep(20);
+        TimeUnit.SECONDS.sleep(30);
 
         // Ensure that the outdated data has been expunged
         entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);

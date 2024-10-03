@@ -109,13 +109,18 @@ The selection of primaries cycles back to the front of the list after the Nth on
 A lot of effort has been put into producing tests with significant coverage. 
 Each file in `/src/weatheraggregation/test` contains a test suite associated with one class in the system.
 
-Run the tests by running the TestRunner class in IntelliJ, or by compiling with Maven using:
+Run the tests by running the TestRunner class in IntelliJ, running each individual test class in IntelliJ, or by compiling with Maven using:
 ```
 mvn test
 ```
 
-> Note: Some integration tests take a while (up to 35 seconds) to execute. Don't worry!
-> Testing the system's "natural" behaviour takes some time.
+> Note: Some integration tests take a while (up to 45 seconds) to execute. Don't worry!
+> Testing the system's "natural" behaviour takes some time. 
+> 
+> They shouldn't fail unless your system's socket connections
+> are running exceptionally slowly.
+> 
+> It should take 3 to 5 minutes for all tests to complete. There are over 35 tests in total.
 
 ### AggregationServerTests
 
