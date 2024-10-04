@@ -40,4 +40,13 @@ public class ConversionHelpers {
 
         return stringBuilder.toString();
     }
+
+    /**
+     * Convert a Headers object to a map of headers.
+     * @param canonicalHostname The raw hostname string.
+     * @return The hostname without a protocol.
+     */
+    public static String canonicalHostnameToHostname(String canonicalHostname) {   // Extract headers
+        return canonicalHostname.replaceFirst("^https?://", "");
+    }
 }

@@ -1,6 +1,7 @@
 package weatheraggregation.getclient;
 
 import weatheraggregation.core.AggregationClient;
+import weatheraggregation.core.ConversionHelpers;
 import weatheraggregation.core.LamportClockImpl;
 import weatheraggregation.jsonparser.CustomJsonParser;
 import weatheraggregation.jsonparser.CustomParseException;
@@ -27,7 +28,7 @@ public class GETClient extends AggregationClient {
         this.serverHostname = serverHostname;
         this.stationId = stationId;
 
-        this.serverURI = URI.create("http://" + this.serverHostname);
+        this.serverURI = URI.create("http://" + ConversionHelpers.canonicalHostnameToHostname(this.serverHostname));
         this.httpClient = HttpClient.newHttpClient();
 
         this.lamportClock = new LamportClockImpl();

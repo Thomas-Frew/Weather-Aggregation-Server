@@ -1,6 +1,7 @@
 package weatheraggregation.contentserver;
 
 import weatheraggregation.core.AggregationClient;
+import weatheraggregation.core.ConversionHelpers;
 import weatheraggregation.core.FileHelpers;
 import weatheraggregation.core.LamportClockImpl;
 
@@ -22,7 +23,7 @@ public class ContentServer extends AggregationClient {
         this.serverHostname = serverHostname;
         this.contentFilename = contentFilename;
 
-        this.serverURI = URI.create("http://" + this.serverHostname);
+        this.serverURI = URI.create("http://" + ConversionHelpers.canonicalHostnameToHostname(this.serverHostname));
         this.httpClient = HttpClient.newHttpClient();
 
         this.lamportClock = new LamportClockImpl();

@@ -274,6 +274,38 @@ public class ContentServerTests {
     }
 
     /**
+     Successfully push data to a hostname with "http" on the front.
+     */
+    @Test
+    public void useCanonicalHostname() throws IOException, InterruptedException {
+        // Set up the aggregationServer (server) and contentServer (client)
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/0_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
+        ContentServer client = new ContentServer("http://" + TestHelpers.HOSTNAME, TestHelpers.DIRECTORY + "testdata/content_data_1.tst");
+
+        // Make a request and get a response
+        server.startServer();
+        HttpRequest request = client.createRequest();
+        HttpResponse<String> response = client.sendRequest(request);
+        client.processResponse(response);
+
+        // Ensure the response is 201
+        int responseStatus = response.statusCode();
+        assertEquals(201, responseStatus);
+
+        // Check that the file contents match what we expect
+        List<String[]> entries = FileHelpers.readWeatherFileAll(TestHelpers.WEATHER_DATA_FILENAME);
+        assertEquals(entries.getFirst()[0], "IDS00001");
+        assertEquals(entries.getFirst()[2], "1");
+
+        // Test that the lamport time has been updated
+        assertEquals(2, client.lamportClock.getLamportTime());
+
+        // Shutdown the server
+        server.shutdownServer();
+    }
+
+    /**
      Integration Test: Push data every 2 seconds.
      */
     @Test

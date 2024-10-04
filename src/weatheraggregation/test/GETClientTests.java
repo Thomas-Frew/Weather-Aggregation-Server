@@ -26,7 +26,7 @@ public class GETClientTests {
         AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
         GETClient client = new GETClient(TestHelpers.HOSTNAME);
 
-        // Make a request and a the response
+        // Make a request and the response
         server.startServer();
         HttpRequest request = client.createRequest();
         HttpResponse<String> response = client.sendRequest(request);
@@ -158,6 +158,33 @@ public class GETClientTests {
         // Ensure the response is 404
         int responseStatus = response.statusCode();
         assertEquals(404, responseStatus);
+
+        // Test that the lamport time has been updated
+        assertEquals(2, client.lamportClock.getLamportTime());
+
+        // Shutdown the server
+        server.shutdownServer();
+    }
+
+    /**
+     Successfully fetch data from a hostname with "http" on the front.
+     */
+    @Test
+    public void useCanonicalHostname() throws IOException, InterruptedException {
+        // Set up the file, server and client
+        TestHelpers.swapFiles(TestHelpers.DIRECTORY + "testdata/1_entry.tst", TestHelpers.WEATHER_DATA_FILENAME);
+        AggregationServer server = new AggregationServer(TestHelpers.WEATHER_DATA_FILENAME, TestHelpers.PORT, true);
+        GETClient client = new GETClient("http://" + TestHelpers.HOSTNAME);
+
+        // Make a request and the response
+        server.startServer();
+        HttpRequest request = client.createRequest();
+        HttpResponse<String> response = client.sendRequest(request);
+        client.processResponse(response);
+
+        // Ensure the response is 404
+        int responseStatus = response.statusCode();
+        assertEquals(200, responseStatus);
 
         // Test that the lamport time has been updated
         assertEquals(2, client.lamportClock.getLamportTime());

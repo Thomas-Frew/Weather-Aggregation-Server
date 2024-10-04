@@ -109,10 +109,13 @@ The selection of primaries cycles back to the front of the list after the Nth on
 A lot of effort has been put into producing tests with significant coverage. 
 Each file in `/src/weatheraggregation/test` contains a test suite associated with one class in the system.
 
-Run the tests by running the TestRunner class in IntelliJ, running each individual test class in IntelliJ, or by compiling with Maven using:
+Run the tests by running the TestRunner class in IntelliJ, running each individual test class in IntelliJ.
+
+You can try by compiling with Maven using:
 ```
 mvn test
 ```
+But this isn't confirmed to work.
 
 > Note: Some integration tests take a while (up to 45 seconds) to execute. Don't worry!
 > Testing the system's "natural" behaviour takes some time. 
@@ -139,9 +142,10 @@ Tests for lone (non-replicated) ContentServers.
 - `sendDataWithoutValidFields`:  Fail to send data that lacks any weather fields and ensure the response is 500.
 - `sendDataWithoutID`: Fail to send data that has some weather fields, but lacks an ID. Ensure the response is 500.
 - `sendEmptyJSON`: Fail to send data that lacks any data, and ensure the response is 204.
+- - `useCanonicalHostname`: Successfully push data to a hostname with "http" on the front.
 - `regularRequestsSent`: Run the ContentServer and ensure data is pushed every 2 seconds.
 
-### ContentServerTests
+### GETClientTests
 
 Tests for GETClients.
 
@@ -150,6 +154,7 @@ Tests for GETClients.
 - `fetchSpecificData`: Fetch a specific (not most recent) entry from an AggregationServer.
 - `fetchMissingData`: Fail to fetch a non-existent entry from an AggregationServer. Ensure the response is 404.
 - `fetchNoData`: Fail to fetch a non-existent entry from an AggregationServer that has no data. Ensure the response is 404.
+- `useCanonicalHostname`: Successfully fetch data from a hostname with "http" on the front.
 - `regularRequestsSent`: Run the GETClient and ensure data is fetched every 2 seconds.
 
 ### JsonParserTests

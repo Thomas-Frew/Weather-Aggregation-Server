@@ -1,6 +1,7 @@
 package weatheraggregation.replicatedcontentserver;
 
 import weatheraggregation.contentserver.ContentServer;
+import weatheraggregation.core.ConversionHelpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
